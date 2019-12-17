@@ -1,0 +1,16 @@
+name: 'MongoDB in GitHub Actions'
+description: 'Start a MongoDB server (on default port 27017)'
+
+branding:
+  icon: 'database'
+  color: 'red'
+
+inputs:
+  mongodb-version:
+    description: 'MongoDB version to use'
+    required: false
+    default: 'latest'
+
+runs:
+  using: 'node12'
+  main: 'start-mongodb.js'

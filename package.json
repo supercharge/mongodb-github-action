@@ -1,0 +1,28 @@
+{
+  "name": "@supercharge/mongodb-github-action",
+  "description": "MongoDB server in a GitHub Action",
+  "version": "1.0.0",
+  "author": "Marcus Pöhls <marcus@superchargejs.com>",
+  "bugs": {
+    "url": "https://github.com/superchargejs/mongodb-github-action/issues"
+  },
+  "dependencies": {
+    "@actions/core": "~1.2.0",
+    "@actions/exec": "~1.0.2"
+  },
+  "engines": {
+    "node": ">=8"
+  },
+  "homepage": "https://github.com/superchargejs/mongodb-github-action",
+  "keywords": [
+    "mongodb",
+    "github",
+    "github-action",
+    "supercharge"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/superchargejs/mongodb-github-action.git"
+  }
+}
