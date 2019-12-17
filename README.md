@@ -5,7 +5,7 @@
   <br/>
   <br/>
   <p>
-    <h3>MongoDB GitHub Action</h3>
+    <h3>MongoDB GitHub Actions</h3>
   </p>
   <p>
     Start a MongoDB server in your GitHub Actions.
