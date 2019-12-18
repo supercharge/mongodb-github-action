@@ -3,7 +3,7 @@ description: 'Start a MongoDB server (on default port 27017)'
 
 branding:
   icon: 'database'
-  color: 'red'
+  color: 'green'
 
 inputs:
   mongodb-version:
@@ -12,5 +12,7 @@ inputs:
     default: 'latest'
 
 runs:
-  using: 'node12'
-  main: 'start-mongodb.js'
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ${{ inputs.mongodb-version }}
