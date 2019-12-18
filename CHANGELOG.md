@@ -6,6 +6,7 @@
 ### Updated
 - switched from a Node.js workflow to a Docker-based workflow
   - reduces noise in the repo by removing the Node.js dependencies and only relying on a shell script
+- green database icon in GitHub Action details
 
 
 ## 1.0.0 - 2019-12-17
