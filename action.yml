@@ -19,6 +19,6 @@ inputs:
 runs:
   using: 'docker'
   image: 'Dockerfile'
-  env:
-    - MONGODB_VERSION: ${{ inputs.mongodb-version }}
-    - MONGODB_REPLICA_SET: ${{ inputs.mongodb-replica-set }}
+  args:
+    - ${{ inputs.mongodb-version }}
+    - ${{ inputs.mongodb-replica-set }}

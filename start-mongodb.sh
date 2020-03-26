@@ -1,5 +1,8 @@
 #!/bin/sh
 
+MONGODB_VERSION=$1
+MONGODB_REPLICA_SET=$2
+
 if [ -z "$MONGODB_REPLICA_SET" ]
 then
   # empty replica set, start single MongoDB instance
