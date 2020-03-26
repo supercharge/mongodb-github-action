@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: 12
+        node-version: [12]
         mongodb-version: [4.0, 4.2]
 
     name: Start MongoDB Server v${{ matrix.mongodb-version }}
