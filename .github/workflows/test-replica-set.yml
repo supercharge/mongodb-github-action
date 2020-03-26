@@ -21,15 +21,15 @@ jobs:
           mongodb-version: ${{ matrix.mongodb-version }}
           mongodb-replica-set: "mongodb-test-rs"
 
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
 
-    - run: npm install
-      env:
-        CI: true
+      - run: npm install
+        env:
+          CI: true
 
-    - run: npm test ./test/replica-set.js
-      env:
-        CI: true
+      - run: npm test ./test/replica-set.js
+        env:
+          CI: true
