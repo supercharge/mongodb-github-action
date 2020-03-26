@@ -13,9 +13,9 @@ jobs:
     name: Start MongoDB Server v${{ matrix.mongodb-version }}
     steps:
       - name: Docker
-      run: |
-        echo $'{\n    "dns": ["10.0.0.2", "8.8.8.8"]\n}' | sudo tee /etc/docker/daemon.json
-        sudo service docker restart
+        run: |
+          echo $'{\n    "dns": ["10.0.0.2", "8.8.8.8"]\n}' | sudo tee /etc/docker/daemon.json
+          sudo service docker restart
 
       - name: Checkout
         uses: actions/checkout@v1
