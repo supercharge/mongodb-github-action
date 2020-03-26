@@ -67,6 +67,44 @@ jobs:
         CI: true
 ```
 
+### With a replica set
+
+```yaml
+name: Run tests
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [8.x, 10.x, 12.x, 13.x]
+        mongodb-version: [4.0, 4.2]
+
+    steps:
+      - name: Git checkout
+        uses: actions/checkout@v1
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Start MongoDB
+        uses: supercharge/mongodb-github-action@1.1.0
+        with:
+          mongodb-version: ${{ matrix.mongodb-version }}
+        env:
+          MONGO_REPL_SET: rsTest
+
+      - run: npm install
+
+      - run: npm test
+        env:
+          CI: true
+```
+
 
 ## License
 MIT © [Supercharge](https://superchargejs.com)
