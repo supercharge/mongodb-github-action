@@ -12,7 +12,9 @@ describe('MongoDB Replica Set ->', () => {
       Mongoose.connect('mongodb://localhost', {
         useNewUrlParser: true,
         useUnifiedTopology: true,
-        replicaSet: 'mongodb-test-rs'
+        replicaSet: 'mongodb-test-rs',
+        connectTimeoutMS: 1000,
+        serverSelectionTimeoutMS: 1000
       })
     ).to.not.reject()
   })

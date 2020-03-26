@@ -1,4 +1,4 @@
-name: Start MongoDB Server
+name: Test Single MongoDB Instance
 
 on: [push]
 
