@@ -16,4 +16,16 @@ describe('MongoDB Replica Set ->', () => {
       })
     ).to.not.reject()
   })
+
+  it('fails to connect to non-existent replica set', async () => {
+    await expect(
+      Mongoose.connect('mongodb://localhost:27018', {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+        replicaSet: 'mongodb-test-rs',
+        connectTimeoutMS: 1000,
+        serverSelectionTimeoutMS: 1000
+      })
+    ).to.reject()
+  })
 })

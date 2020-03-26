@@ -15,4 +15,15 @@ describe('MongoDB Single Instance ->', () => {
       })
     ).to.not.reject()
   })
+
+  it('fails to connect to non-existent MongoDB instance', async () => {
+    await expect(
+      Mongoose.connect('mongodb://localhost:27018', {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+        connectTimeoutMS: 1000,
+        serverSelectionTimeoutMS: 1000
+      })
+    ).to.reject()
+  })
 })
