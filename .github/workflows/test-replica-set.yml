@@ -7,29 +7,23 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [12]
         mongodb-version: [4.0, 4.2]
 
     name: Start MongoDB Server v${{ matrix.mongodb-version }}
     steps:
-      - name: Docker
-        run: |
-          echo $'{\n    "dns": ["10.0.0.2", "8.8.8.8"]\n}' | sudo tee /etc/docker/daemon.json
-          sudo service docker restart
-
       - name: Checkout
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2
 
       - name: Start MongoDB Server
         uses: ./
         with:
           mongodb-version: ${{ matrix.mongodb-version }}
-          mongodb-replica-set: "mongodb-test-rs"
+          mongodb-replica-set: mongodb-test-rs
 
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 12.x
 
       - run: npm install
         env:

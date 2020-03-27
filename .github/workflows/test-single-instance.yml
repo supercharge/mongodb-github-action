@@ -7,13 +7,12 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [12]
         mongodb-version: [4.0, 4.2]
 
     name: Start MongoDB Server v${{ matrix.mongodb-version }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2
 
       - name: Start MongoDB Server
         uses: ./
@@ -24,7 +23,7 @@ jobs:
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 12.x
 
       - run: npm install
         env:
