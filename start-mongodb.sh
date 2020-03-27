@@ -6,11 +6,13 @@ MONGODB_REPLICA_SET=$2
 if [ -z "$MONGODB_REPLICA_SET" ]
 then
   # empty replica set, start single MongoDB instance
+  echo "Starting single MongoDB instance, no replica set"
   docker run --name mongodb --publish 27017:27017 --detach mongo:$MONGODB_VERSION
   return
 fi
 
 # Start with replica set
+echo "Starting MongoDB as single node replica set (in replica set [$MONGODB_REPLICA_SET])"
 docker run --name mongodb --publish 27017:27017 --detach mongo:$MONGODB_VERSION --replSet $MONGODB_REPLICA_SET
 
 # Wait until MongoDB is ready to accept connections
