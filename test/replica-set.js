@@ -4,27 +4,35 @@ const Lab = require('@hapi/lab')
 const Mongoose = require('mongoose')
 const { expect } = require('@hapi/code')
 
-const { describe, it } = (exports.lab = Lab.script())
+const { describe, it, before } = (exports.lab = Lab.script())
+
+const replicaSetName = 'mongodb-test-rs'
 
 describe('MongoDB Replica Set ->', () => {
-  it('connects to a replica set', async () => {
+  before(async () => {
     await expect(
-      Mongoose.connect('mongodb://localhost', {
+      Mongoose.connect('mongodb://localhost:27017/test', {
         useNewUrlParser: true,
         useUnifiedTopology: false,
-        replicaSet: 'mongodb-test-rs',
-        connectTimeoutMS: 1000,
-        serverSelectionTimeoutMS: 1000
+        replicaSet: replicaSetName
       })
     ).to.not.reject()
   })
 
+  it('connects to a replica set', async () => {
+    const db = Mongoose.connection.db.admin()
+    const result = await db.command({ replSetGetStatus: 1 })
+
+    expect(result.ok).to.equal(1)
+    expect(result.set).to.equal(`replica set ${replicaSetName} is set up`)
+  })
+
   it('fails to connect to non-existent replica set', async () => {
     await expect(
-      Mongoose.connect('mongodb://localhost:27018', {
+      Mongoose.connect('mongodb://localhost:27017', {
         useNewUrlParser: true,
         useUnifiedTopology: false,
-        replicaSet: 'mongodb-test-rs',
+        replicaSet: 'non-existent-replica-set',
         connectTimeoutMS: 1000,
         serverSelectionTimeoutMS: 1000
       })
