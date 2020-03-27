@@ -11,6 +11,10 @@ jobs:
 
     name: Start MongoDB Server v${{ matrix.mongodb-version }}
     steps:
+      - name: Edit /etc/hosts
+        run: |
+          echo "127.0.0.1 mongodb" >> /etc/hosts
+
       - name: Checkout
         uses: actions/checkout@v2
 
