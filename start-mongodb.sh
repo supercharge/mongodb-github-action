@@ -13,7 +13,7 @@ fi
 
 # Start with replica set
 echo "Starting MongoDB as single node replica set (in replica set [$MONGODB_REPLICA_SET])"
-docker run --name mongodb --publish 27017:27017 --detach mongo:$MONGODB_VERSION --replSet $MONGODB_REPLICA_SET
+docker run --name mongodb --publish 27017:27017 --detach mongo:$MONGODB_VERSION mongod --replSet $MONGODB_REPLICA_SET
 
 # Wait until MongoDB is ready to accept connections
 COUNTER=0
