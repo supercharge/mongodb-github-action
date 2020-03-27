@@ -11,6 +11,7 @@ describe('MongoDB Replica Set ->', () => {
     await expect(
       Mongoose.connect('mongodb://localhost', {
         useNewUrlParser: true,
+        useUnifiedTopology: false,
         replicaSet: 'mongodb-test-rs',
         connectTimeoutMS: 1000,
         serverSelectionTimeoutMS: 1000
@@ -22,6 +23,7 @@ describe('MongoDB Replica Set ->', () => {
     await expect(
       Mongoose.connect('mongodb://localhost:27018', {
         useNewUrlParser: true,
+        useUnifiedTopology: false,
         replicaSet: 'mongodb-test-rs',
         connectTimeoutMS: 1000,
         serverSelectionTimeoutMS: 1000
