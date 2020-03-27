@@ -20,7 +20,7 @@ jobs:
           mongodb-version: ${{ matrix.mongodb-version }}
           mongodb-replica-set: mongodb-test-rs
 
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Use Node.js v12.x
         uses: actions/setup-node@v1
         with:
           node-version: 12.x
