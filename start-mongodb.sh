@@ -11,9 +11,9 @@ then
 fi
 
 # Start with replica set
-docker run --name mongodb --publish 27017:27017 --detach mongo:$MONGODB_VERSION mongod --replSet $MONGODB_REPLICA_SET
+docker run --name mongodb --publish 27017:27017 --detach mongo:$MONGODB_VERSION --replSet $MONGODB_REPLICA_SET
 
-# Wait until Mongo is ready to accept connections, exit if this does not happen within 30 seconds
+# Wait until MongoDB is ready to accept connections
 COUNTER=0
 until docker exec --tty mongodb mongo --eval "printjson(db.serverStatus())"
 do
