@@ -12,8 +12,8 @@ describe('MongoDB Replica Set ->', () => {
   before(async () => {
     await expect(
       Mongoose.connect('mongodb://localhost:27017/test', {
-        useNewUrlParser: true,
-        useUnifiedTopology: false,
+        // useNewUrlParser: true,
+        // useUnifiedTopology: false,
         replicaSet: replicaSetName
       })
     ).to.not.reject()
