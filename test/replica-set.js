@@ -10,7 +10,7 @@ const replicaSetName = 'mongodb-test-rs'
 
 describe('MongoDB Replica Set ->', () => {
   before(async () => {
-    await Mongoose.connect('mongodb://mongodb:27017/test', {
+    await Mongoose.connect('mongodb://localhost:27017/test', {
       useNewUrlParser: true,
       useUnifiedTopology: true,
       replicaSet: replicaSetName,
@@ -18,7 +18,7 @@ describe('MongoDB Replica Set ->', () => {
     })
   })
 
-  it('connects to a replica set', async () => {
+  it('queries the replica set status', async () => {
     const db = Mongoose.connection.db.admin()
     const { ok, set } = await db.command({ replSetGetStatus: 1 })
 
