@@ -10,13 +10,12 @@ const replicaSetName = 'mongodb-test-rs'
 
 describe('MongoDB Replica Set ->', () => {
   before(async () => {
-    await expect(
-      Mongoose.connect('mongodb://localhost:27017/test', {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-        replicaSet: replicaSetName
-      })
-    ).to.not.reject()
+    await Mongoose.connect('mongodb://localhost:27017/test', {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      replicaSet: replicaSetName,
+      serverSelectionTimeoutMS: 1500
+    })
   })
 
   it('connects to a replica set', async () => {
@@ -24,6 +23,6 @@ describe('MongoDB Replica Set ->', () => {
     const { ok, set } = await db.command({ replSetGetStatus: 1 })
 
     expect(ok).to.equal(1)
-    expect(set).to.equal(`replica set ${replicaSetName} is set up`)
+    expect(set).to.equal(replicaSetName)
   })
 })
