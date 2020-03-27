@@ -1,4 +1,4 @@
-name: Test MongoDB Replica Set
+name: Replica Set Tests
 
 on: [push]
 

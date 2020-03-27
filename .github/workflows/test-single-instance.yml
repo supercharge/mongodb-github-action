@@ -1,4 +1,4 @@
-name: Test Single MongoDB Instance
+name: Single Instance Tests
 
 on: [push]
 

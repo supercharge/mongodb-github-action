@@ -11,9 +11,9 @@ const replicaSetName = 'mongodb-test-rs'
 describe('MongoDB Replica Set ->', () => {
   before(async () => {
     await expect(
-      Mongoose.connect('mongodb://localhost:27017/test', {
-        // useNewUrlParser: true,
-        // useUnifiedTopology: false,
+      Mongoose.connect('mongodb://mongodb:27017/test', {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
         replicaSet: replicaSetName
       })
     ).to.not.reject()
