@@ -13,7 +13,7 @@ jobs:
     steps:
       - name: Edit /etc/hosts
         run: |
-          echo "127.0.0.1 mongodb" >> /etc/hosts
+          sudo echo "127.0.0.1 mongodb" >> /etc/hosts
 
       - name: Checkout
         uses: actions/checkout@v2
