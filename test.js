@@ -7,17 +7,14 @@ const [DB_ADDR, DB_PORT, REPLICA_NAME] = ['localhost', 27017, 'rsTest']
 
 const mongoUri = `mongodb://${DB_ADDR}:${DB_PORT}/test`,
   options = {
-    useUnifiedTopology: false,
+    useUnifiedTopology: true,
     useNewUrlParser: true,
     replicaSet: REPLICA_NAME,
   }
 
 test.before('setup', async t => {
   const [err, _res] = await to(mongoose.connect(mongoUri, options))
-  t.log(`mongouri "${mongoUri}"`)
-  if (err) {
-    t.fail(err)
-  }
+  if (err) t.fail(err.message)
   t.pass('connected')
 })
 
