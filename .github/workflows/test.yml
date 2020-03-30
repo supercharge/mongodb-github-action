@@ -1,0 +1,32 @@
+name: Test Mongo GitHub Action
+
+on: [push]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        mongodb-version: [4.0, 4.2]
+
+    name: Test Mongo GitHub Action on MongoDB Server v${{ matrix.mongodb-version }}
+    steps:
+      - name: Git checkout
+        uses: actions/checkout@v2
+
+      - name: Use Node.js 12.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+
+      - name: Create mongo Docker container
+        id: build_mongo_docker
+        uses: ./
+        with:
+          mongodb-version: ${{ matrix.mongodb-version }}
+        env:
+          MONGO_REPL_SET: rsTest
+
+      - run: npm install
+
+      - run: npm test
