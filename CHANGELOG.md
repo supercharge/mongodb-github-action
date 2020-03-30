@@ -1,11 +1,11 @@
 # Changelog
 
 
-## [1.2.0](https://github.com/superchargejs/mongodb-github-action/compare/v1.1.0...v1.2.0) - 2020-03-xx
+## [1.2.0](https://github.com/superchargejs/mongodb-github-action/compare/v1.1.0...v1.2.0) - 2020-03-30
 
 ### Added
 - `mongodb-replica-set` input to define a MongoDB replica set name
-- tests connecting to the MongoDB instances created by this GitHub Action
+- tests connecting to MongoDB instances (single instance, replica set) created by this GitHub Action
 
 
 ## [1.1.0](https://github.com/superchargejs/mongodb-github-action/compare/v1.0.0...v1.1.0) - 2019-12-18
