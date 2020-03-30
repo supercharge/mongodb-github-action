@@ -16,8 +16,9 @@ echo "Starting MongoDB as single node replica set (in replica set [$MONGODB_REPL
 docker run --name mongodb --publish 27017:27017 --detach mongo:$MONGODB_VERSION mongod --replSet $MONGODB_REPLICA_SET
 
 # Wait until MongoDB is ready to accept connections
+echo "Waiting for MongoDB to accept connections"
 COUNTER=0
-until docker exec --tty mongodb mongo --eval "printjson(db.serverStatus())"
+until docker exec --tty mongodb mongo --eval "db.serverStatus()"
 do
   sleep 1
   echo "."
