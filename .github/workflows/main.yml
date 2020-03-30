@@ -1,4 +1,4 @@
-name: Single Instance Tests
+name: Start MongoDB Server
 
 on: [push]
 
@@ -18,16 +18,3 @@ jobs:
         uses: ./
         with:
           mongodb-version: ${{ matrix.mongodb-version }}
-
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
-        with:
-          node-version: 12.x
-
-      - run: npm install
-        env:
-          CI: true
-
-      - run: npm test ./test/single-instance.js
-        env:
-          CI: true
