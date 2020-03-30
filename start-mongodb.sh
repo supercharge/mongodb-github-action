@@ -30,6 +30,6 @@ do
 done
 
 echo "Initiating MongoDB replica set [$MONGODB_REPLICA_SET]"
-docker exec --tty mongodb mongo --eval "rs.initiate({ \"_id\": \"$MONGO_REPL_SET\", \"members\": [{ \"_id\": 0, \"host\": \"localhost\" }] })"
+docker exec --tty mongodb mongo --eval "rs.initiate({ \"_id\": \"$MONGODB_REPLICA_SET\", \"members\": [{ \"_id\": 0, \"host\": \"localhost\" }] })"
 echo "Check! Initiated MongoDB replica set [$MONGODB_REPLICA_SET]"
 sleep 5
