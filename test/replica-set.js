@@ -44,20 +44,20 @@ describe('MongoDB Replica Set ->', () => {
     const session = await Mongoose.startSession()
     session.startTransaction()
 
-    await Customer.create([{ name: 'Test transaction customer' }], { session })
+    await Customer.create([{ name: 'test-customer' }], { session })
 
     expect(
-      await Customer.findOne({ name: 'Test transaction customer' })
-    ).to.be.empty()
+      await Customer.findOne({ name: 'test-customer' })
+    ).to.not.exist()
 
     expect(
-      await Customer.findOne({ name: 'Test transaction customer' }).session(session)
+      await Customer.findOne({ name: 'test-customer' }).session(session)
     ).to.exist()
 
     await session.commitTransaction()
 
     expect(
-      await Customer.findOne({ name: 'Test transaction customer' })
+      await Customer.findOne({ name: 'test-customer' })
     ).to.exist()
   })
 })
