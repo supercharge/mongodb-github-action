@@ -69,6 +69,47 @@ jobs:
 ```
 
 
+### With a Replica Set
+You can run your tests against a MongoDB replica set by adding the `mongodb-replica-set: your-replicate-set-name` input. The value for `mongodb-replica-set` defines the name of your replica set. Replace `your-replicate-set-name` with the replica set name you want to use in your tests.
+
+The following example uses the replica set name `test-rs`:
+
+```yaml
+name: Run tests
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [8.x, 10.x, 12.x, 13.x]
+        mongodb-version: [4.0, 4.2]
+
+    steps:
+    - name: Git checkout
+      uses: actions/checkout@v2
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: Start MongoDB
+      uses: supercharge/mongodb-github-action@1.2.0
+      with:
+        mongodb-version: ${{ matrix.mongodb-version }}
+        mongodb-replica-set: test-rs
+
+    - run: npm install
+
+    - run: npm test
+      env:
+        CI: true
+```
+
+
 ## License
 MIT © [Supercharge](https://superchargejs.com)
 
