@@ -31,14 +31,12 @@ done
 
 echo "Initiating replica set [$MONGODB_REPLICA_SET]"
 docker exec --tty mongodb mongo --eval "
-  rs.initiate(
-    JSON.stringify({
-      _id: $MONGODB_REPLICA_SET,
-      members: [ {
-        _id: 0,
-        host: localhost
-      } ]
-    })
-  )
+  rs.initiate({
+    \"_id\": \"$MONGODB_REPLICA_SET\",
+    \"members\": [ {
+       \"_id\": 0,
+      \"host\": \"localhost\"
+    } ]
+  })
 "
 echo "Check! Initiated replica set [$MONGODB_REPLICA_SET]"
