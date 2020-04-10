@@ -1,6 +1,12 @@
 # Changelog
 
 
+## [1.3.0](https://github.com/superchargejs/mongodb-github-action/compare/v1.2.0...v1.3.0) - 2020-04-10
+
+### Added
+- check if the `mongodb-version` input is present: if not, print a message and fail the job
+
+
 ## [1.2.0](https://github.com/superchargejs/mongodb-github-action/compare/v1.1.0...v1.2.0) - 2020-03-30
 
 ### Added
