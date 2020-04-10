@@ -56,7 +56,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
 
     - name: Start MongoDB
-      uses: supercharge/mongodb-github-action@1.2.0
+      uses: supercharge/mongodb-github-action@1.3.0
       with:
         mongodb-version: ${{ matrix.mongodb-version }}
         mongodb-replica-set: insert-replica-set-name
@@ -97,7 +97,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
 
     - name: Start MongoDB
-      uses: supercharge/mongodb-github-action@1.2.0
+      uses: supercharge/mongodb-github-action@1.3.0
       with:
         mongodb-version: ${{ matrix.mongodb-version }}
         mongodb-replica-set: test-rs
