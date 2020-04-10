@@ -15,8 +15,7 @@ jobs:
         uses: ./
         with:
           mongodb-version: ""
-
-      - name: Job should have failed
         if: success()
         run: |
           echo "This workflow job should have failed due to the missing MongoDB version"
+          exit 1
