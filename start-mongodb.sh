@@ -5,15 +5,13 @@ MONGODB_VERSION=$1
 MONGODB_REPLICA_SET=$2
 
 
-if [ -z "$MONGODB_VERSION" ]
-then
-  echo "Missing MongoDB version in the 'mongodb-version' input. Received value: $MONGODB_VERSION"
+if [ -z "$MONGODB_VERSION" ]; then
+  echo "Missing MongoDB version in the [mongodb-version] input. Received value: $MONGODB_VERSION"
   exit 2
 fi
 
 
-if [ -z "$MONGODB_REPLICA_SET" ]
-then
+if [ -z "$MONGODB_REPLICA_SET" ]; then
   echo "Starting single-node instance, no replica set"
   docker run --name mongodb --publish 27017:27017 --detach mongo:$MONGODB_VERSION
   return
@@ -29,9 +27,9 @@ until docker exec --tty mongodb mongo --eval "db.serverStatus()"
 do
   sleep 1
   echo "."
-  TIMER=$((TIMER+1))
+  TIMER=$((TIMER + 1))
 
-  if [[ ${TIMER} -eq 20 ]]; then
+  if [[ $TIMER -eq 20 ]]; then
     echo "MongoDB did not initialize within 20 seconds. Exiting."
     exit 2
   fi
