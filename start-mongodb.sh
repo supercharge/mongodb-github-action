@@ -4,6 +4,14 @@
 MONGODB_VERSION=$1
 MONGODB_REPLICA_SET=$2
 
+
+if [ -z "$MONGODB_VERSION" ]
+then
+  echo "Missing MongoDB version in the 'mongodb-version' input. Received value: $MONGODB_VERSION"
+  exit 2
+fi
+
+
 if [ -z "$MONGODB_REPLICA_SET" ]
 then
   echo "Starting single-node instance, no replica set"
