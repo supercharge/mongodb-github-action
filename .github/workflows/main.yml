@@ -4,9 +4,10 @@ on: [push]
 
 jobs:
   mongodb-action:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     strategy:
       matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
         mongodb-version: [4.0, 4.2]
 
     name: Start MongoDB Server v${{ matrix.mongodb-version }}
