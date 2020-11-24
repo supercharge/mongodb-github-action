@@ -43,8 +43,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [8.x, 10.x, 12.x, 13.x]
-        mongodb-version: [4.0, 4.2]
+        node-version: [12.x, 14.x]
+        mongodb-version: [4.0, 4.2, 4.4]
 
     steps:
     - name: Git checkout
@@ -83,8 +83,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [8.x, 10.x, 12.x, 13.x]
-        mongodb-version: [4.0, 4.2]
+        node-version: [12.x, 14.x]
+        mongodb-version: [4.0, 4.2, 4.4]
 
     steps:
     - name: Git checkout
@@ -101,9 +101,11 @@ jobs:
         mongodb-version: ${{ matrix.mongodb-version }}
         mongodb-replica-set: test-rs
 
-    - run: npm install
+    - name: Install dependencies
+      run: npm install
 
-    - run: npm test
+    - name: Run tests
+      run: npm test
       env:
         CI: true
 ```
