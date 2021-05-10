@@ -25,7 +25,7 @@
 
 
 ## Introduction
-This GitHub Action starts a MongoDB server or MongoDB replica set on the default port `27017`.
+This GitHub Action starts a MongoDB server or MongoDB replica set on the default port `27017` (can be configured).
 
 This is useful when running tests against a MongoDB database.
 
@@ -100,6 +100,7 @@ jobs:
       with:
         mongodb-version: ${{ matrix.mongodb-version }}
         mongodb-replica-set: test-rs
+        mongodb-port: 42069
 
     - name: Install dependencies
       run: npm install

@@ -3,6 +3,7 @@
 # Map input values from the GitHub Actions workflow to shell variables
 MONGODB_VERSION=$1
 MONGODB_REPLICA_SET=$2
+MONGODB_PORT=$3
 
 
 if [ -z "$MONGODB_VERSION" ]; then
@@ -13,13 +14,13 @@ fi
 
 if [ -z "$MONGODB_REPLICA_SET" ]; then
   echo "Starting single-node instance, no replica set"
-  docker run --name mongodb --publish 27017:27017 --detach mongo:$MONGODB_VERSION
+  docker run --name mongodb --publish $MONGODB_PORT:27017 --detach mongo:$MONGODB_VERSION
   return
 fi
 
 
 echo "Starting as single-node replica set (in replica set [$MONGODB_REPLICA_SET])"
-docker run --name mongodb --publish 27017:27017 --detach mongo:$MONGODB_VERSION mongod --replSet $MONGODB_REPLICA_SET
+docker run --name mongodb --publish $MONGODB_PORT:27017 --detach mongo:$MONGODB_VERSION mongod --replSet $MONGODB_REPLICA_SET
 
 echo "Waiting for MongoDB to accept connections"
 TIMER=0
