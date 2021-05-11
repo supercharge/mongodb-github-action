@@ -24,10 +24,10 @@ jobs:
         with:
           node-version: 12.x
 
-      - run: npm install
-        env:
-          CI: true
+      - name: Install dependencies
+        run: npm install
 
-      - run: npm test ./test/single-instance.js
+      - name: Run tests
+        run: npm test ./test/single-instance.js
         env:
           CI: true
