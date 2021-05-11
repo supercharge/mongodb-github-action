@@ -16,6 +16,11 @@ inputs:
     required: false
     default: ''
 
+  mongodb-port:
+    description: 'MongoDB port to use (default 27017)'
+    required: false
+    default: 27017
+
 runs:
   using: 'docker'
   image: 'Dockerfile'
