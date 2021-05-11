@@ -10,12 +10,12 @@ jobs:
         node-version: [12, 14, 16]
         mongodb-version: [4.0, 4.2, 4.4]
 
-    name: Start MongoDB Server v${{ matrix.mongodb-version }}
+    name: MongoDB v${{ matrix.mongodb-version }} — Node.js v${{ matrix.node-version }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Start MongoDB Server
+      - name: Start MongoDB Server v${{ matrix.mongodb-version }}
         uses: ./
         with:
           mongodb-version: ${{ matrix.mongodb-version }}
