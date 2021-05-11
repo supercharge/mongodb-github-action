@@ -27,3 +27,4 @@ runs:
   args:
     - ${{ inputs.mongodb-version }}
     - ${{ inputs.mongodb-replica-set }}
+    - ${{ inputs.mongodb-port }}
