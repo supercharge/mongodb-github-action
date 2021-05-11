@@ -7,7 +7,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        mongodb-version: [4.0, 4.2]
+        node-version: [12, 14, 16]
+        mongodb-version: [4.0, 4.2, 4.4]
 
     name: Start MongoDB Server v${{ matrix.mongodb-version }}
     steps:
@@ -20,10 +21,10 @@ jobs:
           mongodb-version: ${{ matrix.mongodb-version }}
           mongodb-replica-set: mongodb-test-rs
 
-      - name: Use Node.js v12.x
+      - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
-          node-version: 12.x
+          node-version: ${{ matrix.node-version }}
 
       - name: Install dependencies
         run: npm install
