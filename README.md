@@ -44,7 +44,7 @@ jobs:
     strategy:
       matrix:
         node-version: [12.x, 14.x]
-        mongodb-version: [4.0, 4.2, 4.4]
+        mongodb-version: ['4.0', '4.2', '4.4']
 
     steps:
     - name: Git checkout
@@ -84,7 +84,7 @@ jobs:
     strategy:
       matrix:
         node-version: [12.x, 14.x]
-        mongodb-version: [4.0, 4.2, 4.4]
+        mongodb-version: ['4.0', '4.2', '4.4']
 
     steps:
     - name: Git checkout
@@ -128,7 +128,7 @@ jobs:
     strategy:
       matrix:
         node-version: [12.x, 14.x]
-        mongodb-version: [4.0, 4.2, 4.4]
+        mongodb-version: ['4.0', '4.2', '4.4']
 
     steps:
     - name: Git checkout
