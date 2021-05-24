@@ -1,5 +1,5 @@
 name: 'MongoDB in GitHub Actions'
-description: 'Start a MongoDB server (on default port 27017)'
+description: 'Start a MongoDB server (on default port 27017 or a custom port)'
 
 branding:
   icon: 'database'
