@@ -8,7 +8,7 @@ jobs:
     strategy:
       matrix:
         node-version: [12, 14, 16]
-        mongodb-version: [4.0, 4.2, 4.4]
+        mongodb-version: ['4.0', '4.2', '4.4']
 
     name: MongoDB v${{ matrix.mongodb-version }} — Node.js v${{ matrix.node-version }}
     steps:
