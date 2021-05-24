@@ -8,7 +8,7 @@ jobs:
     strategy:
       matrix:
         mongodb-port: [12345]
-        mongodb-version: [4.0, 4.2, 4.4]
+        mongodb-version: ['4.0', '4.2', '4.4']
         node-version: [12, 14, 16]
 
     name: MongoDB v${{ matrix.mongodb-version }} — Node.js v${{ matrix.node-version }}
