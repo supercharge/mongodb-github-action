@@ -33,6 +33,7 @@ jobs:
         run: npm test ./test/replica-set.js
         env:
           CI: true
+          MONGODB_REPLICA_SET: mongodb-test-rs
 
   single-node-replica-set-on-custom-port:
     runs-on: ubuntu-latest
@@ -42,7 +43,7 @@ jobs:
         mongodb-port: [23456]
         mongodb-version: ['4.0', '4.2', '4.4']
 
-    name: MongoDB RS on custom port v${{ matrix.mongodb-version }} — Node.js v${{ matrix.node-version }}
+    name: MongoDB v${{ matrix.mongodb-version }} RS on custom port — Node.js v${{ matrix.node-version }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -67,3 +68,4 @@ jobs:
         env:
           CI: true
           MONGODB_PORT: ${{ matrix.mongodb-port }}
+          MONGODB_REPLICA_SET: mongodb-test-rs
