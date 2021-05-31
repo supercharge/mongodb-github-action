@@ -10,7 +10,7 @@ jobs:
         node-version: [12, 14, 16]
         mongodb-version: ['4.0', '4.2', '4.4']
 
-    name: MongoDB v${{ matrix.mongodb-version }} — Node.js v${{ matrix.node-version }}
+    name: MongoDB on default port v${{ matrix.mongodb-version }} — Node.js v${{ matrix.node-version }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -42,7 +42,7 @@ jobs:
         mongodb-version: ['4.0', '4.2', '4.4']
         node-version: [12, 14, 16]
 
-    name: MongoDB v${{ matrix.mongodb-version }} — Node.js v${{ matrix.node-version }}
+    name: MongoDB on custom port v${{ matrix.mongodb-version }} — Node.js v${{ matrix.node-version }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
