@@ -3,7 +3,7 @@ name: Replica Set Tests
 on: [push]
 
 jobs:
-  single-nodereplica-set-on-default-port:
+  single-node-replica-set-on-default-port:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -34,7 +34,7 @@ jobs:
         env:
           CI: true
 
-  single-nodereplica-set-on-custom-port:
+  single-node-replica-set-on-custom-port:
     runs-on: ubuntu-latest
     strategy:
       matrix:

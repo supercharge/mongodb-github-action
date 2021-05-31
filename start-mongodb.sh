@@ -19,10 +19,19 @@ if [ -z "$MONGODB_REPLICA_SET" ]; then
 fi
 
 
-echo "Starting as single-node replica set (in replica set [$MONGODB_REPLICA_SET])"
+echo ""
+echo "#########################################"
+echo "Starting MongoDB as single-node replica set: using replica set name [$MONGODB_REPLICA_SET]"
+echo "#########################################"
+
 docker run --name mongodb --publish $MONGODB_PORT:27017 --detach mongo:$MONGODB_VERSION mongod --replSet $MONGODB_REPLICA_SET
 
+
+echo ""
+echo "#########################################"
 echo "Waiting for MongoDB to accept connections"
+echo "#########################################"
+
 TIMER=0
 until docker exec --tty mongodb mongo --port $MONGODB_PORT --eval "db.serverStatus()"
 do
@@ -36,7 +45,12 @@ do
   fi
 done
 
+
+echo ""
+echo "#########################################"
 echo "Initiating replica set [$MONGODB_REPLICA_SET]"
+echo "#########################################"
+
 docker exec --tty mongodb mongo --port $MONGODB_PORT --eval "
   rs.initiate({
     \"_id\": \"$MONGODB_REPLICA_SET\",
