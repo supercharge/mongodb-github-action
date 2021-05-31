@@ -5,34 +5,22 @@ const Mongoose = require('mongoose')
 const { expect } = require('@hapi/code')
 
 const { MONGODB_PORT = 27017, MONGODB_REPLICA_SET = 'mongodb-test-rs' } = process.env
-console.log('------------------------------------------------------')
-console.log('MONGODB_PORT -> ' + MONGODB_PORT)
-console.log('MONGODB_REPLICA_SET -> ' + MONGODB_REPLICA_SET)
-console.log('------------------------------------------------------')
 
 const { describe, it, before, after } = (exports.lab = Lab.script())
 
 describe('MongoDB Replica Set ->', () => {
   before(async () => {
-    console.log('connecting to MongoDB RS using connection string: ' + `mongodb://localhost:${MONGODB_PORT}/test`)
+    const connectionString = `mongodb://localhost:${MONGODB_PORT}/test?replicaSet=${MONGODB_REPLICA_SET}`
 
-    try {
-      await Mongoose.connect(`mongodb://localhost:${MONGODB_PORT}/test?replicaSet=${MONGODB_REPLICA_SET}`, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-        serverSelectionTimeoutMS: 1500
-      })
-    } catch (error) {
-      console.log('Failed to connect to MongoDB on port ' + MONGODB_PORT)
+    console.log('---------------------------------------------------------------------')
+    console.log('connecting to MongoDB using connection string -> ' + connectionString)
+    console.log('---------------------------------------------------------------------')
 
-      console.log('Trying on default port 27017')
-
-      await Mongoose.connect(`mongodb://localhost:27017/test?replicaSet=${MONGODB_REPLICA_SET}`, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-        serverSelectionTimeoutMS: 1500
-      })
-    }
+    await Mongoose.connect(connectionString, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      serverSelectionTimeoutMS: 1500
+    })
   })
 
   after(async () => {
