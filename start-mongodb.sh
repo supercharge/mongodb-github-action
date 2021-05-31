@@ -36,7 +36,7 @@ echo "  - version [$MONGODB_VERSION]"
 echo "  - replica set [$MONGODB_REPLICA_SET]"
 echo "#########################################"
 
-docker run --name mongodb --publish $MONGODB_PORT:27017 --detach mongo:$MONGODB_VERSION mongod --replSet $MONGODB_REPLICA_SET
+docker run --name mongodb --publish $MONGODB_PORT:$MONGODB_PORT --detach mongo:$MONGODB_VERSION mongod --replSet $MONGODB_REPLICA_SET --port $MONGODB_PORT
 
 
 echo ""
@@ -46,7 +46,7 @@ echo "#########################################"
 
 sleep 1
 TIMER=0
-until docker exec --tty mongodb mongo --eval "db.serverStatus()" # &> /dev/null
+until docker exec --tty mongodb mongo --port $MONGODB_PORT --eval "db.serverStatus()" # &> /dev/null
 do
   sleep 1
   echo "."
@@ -64,12 +64,25 @@ echo "#########################################"
 echo "Initiating replica set [$MONGODB_REPLICA_SET]"
 echo "#########################################"
 
-docker exec --tty mongodb mongo --eval "
+echo "RS configuration -->"
+echo "
+  {
+    \"_id\": \"$MONGODB_REPLICA_SET\",
+    \"members\": [ {
+       \"_id\": 0,
+      \"host\": \"localhost:$MONGODB_PORT\"
+    } ]
+  })
+"
+
+echo ""
+
+docker exec --tty mongodb mongo --port $MONGODB_PORT --eval "
   rs.initiate({
     \"_id\": \"$MONGODB_REPLICA_SET\",
     \"members\": [ {
        \"_id\": 0,
-      \"host\": \"localhost\"
+      \"host\": \"localhost:$MONGODB_PORT\"
     } ]
   })
 "
