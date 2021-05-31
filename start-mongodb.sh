@@ -69,7 +69,7 @@ docker exec --tty mongodb mongo --eval "
     \"_id\": \"$MONGODB_REPLICA_SET\",
     \"members\": [ {
        \"_id\": 0,
-      \"host\": \"localhost:$MONGODB_PORT\"
+      \"host\": \"localhost\"
     } ]
   })
 "
