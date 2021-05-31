@@ -3,7 +3,7 @@ name: Single Instance Tests
 on: [push]
 
 jobs:
-  mongodb-action:
+  single-instance-on-default-port:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -30,5 +30,38 @@ jobs:
 
       - name: Run tests
         run: npm test ./test/single-instance.js
+        env:
+          CI: true
+
+
+  single-instance-on-custom-port:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        mongodb-port: [12345]
+        mongodb-version: ['4.0', '4.2', '4.4']
+        node-version: [12, 14, 16]
+
+    name: MongoDB v${{ matrix.mongodb-version }} — Node.js v${{ matrix.node-version }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Start MongoDB Server v${{ matrix.mongodb-version }}
+        uses: ./
+        with:
+          mongodb-version: ${{ matrix.mongodb-version }}
+          mongodb-port: ${{ matrix.mongodb-port }}
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests
+        run: npm test ./test/custom-port.js
         env:
           CI: true
