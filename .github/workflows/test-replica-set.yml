@@ -3,7 +3,7 @@ name: Replica Set Tests
 on: [push]
 
 jobs:
-  mongodb-action:
+  single-nodereplica-set-on-default-port:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -33,3 +33,37 @@ jobs:
         run: npm test ./test/replica-set.js
         env:
           CI: true
+
+  single-nodereplica-set-on-custom-port:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [12, 14, 16]
+        mongodb-port: [23456]
+        mongodb-version: ['4.0', '4.2', '4.4']
+
+    name: MongoDB v${{ matrix.mongodb-version }} — Node.js v${{ matrix.node-version }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Start MongoDB Server v${{ matrix.mongodb-version }}
+        uses: ./
+        with:
+          mongodb-port: ${{ matrix.mongodb-port }}
+          mongodb-version: ${{ matrix.mongodb-version }}
+          mongodb-replica-set: mongodb-test-rs
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests
+        run: npm test ./test/replica-set.js
+        env:
+          CI: true
+          MONGODB_PORT: ${{ matrix.mongodb-port }}
