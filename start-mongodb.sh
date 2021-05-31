@@ -46,7 +46,7 @@ echo "#########################################"
 
 sleep 1
 TIMER=0
-until docker exec --tty mongodb mongo --port $MONGODB_PORT --eval "db.serverStatus()" # &> /dev/null
+until docker exec --tty mongodb mongo --eval "db.serverStatus()" # &> /dev/null
 do
   sleep 1
   echo "."
@@ -64,7 +64,7 @@ echo "#########################################"
 echo "Initiating replica set [$MONGODB_REPLICA_SET]"
 echo "#########################################"
 
-docker exec --tty mongodb mongo --port $MONGODB_PORT --eval "
+docker exec --tty mongodb mongo --eval "
   rs.initiate({
     \"_id\": \"$MONGODB_REPLICA_SET\",
     \"members\": [ {
