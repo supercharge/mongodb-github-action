@@ -14,6 +14,9 @@ fi
 
 if [ -z "$MONGODB_REPLICA_SET" ]; then
   echo "Starting single-node instance, no replica set"
+  echo "  - port [$MONGODB_PORT]"
+  echo "  - version [$MONGODB_VERSION]"
+
   docker run --name mongodb --publish $MONGODB_PORT:27017 --detach mongo:$MONGODB_VERSION
   return
 fi
@@ -21,7 +24,10 @@ fi
 
 echo ""
 echo "#########################################"
-echo "Starting MongoDB as single-node replica set: using replica set name [$MONGODB_REPLICA_SET]"
+echo "Starting MongoDB as single-node replica set"
+echo "  - port [$MONGODB_PORT]"
+echo "  - version [$MONGODB_VERSION]"
+echo "  - replica set [$MONGODB_REPLICA_SET]"
 echo "#########################################"
 
 docker run --name mongodb --publish $MONGODB_PORT:27017 --detach mongo:$MONGODB_VERSION mongod --replSet $MONGODB_REPLICA_SET
