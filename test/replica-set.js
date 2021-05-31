@@ -21,6 +21,10 @@ describe('MongoDB Replica Set ->', () => {
       replicaSet: MONGODB_REPLICA_SET,
       serverSelectionTimeoutMS: 1500
     })
+
+    console.log('Mongoose connected')
+    console.log(Mongoose.connection)
+    console.log(Mongoose.connection.db)
   })
 
   after(async () => {
