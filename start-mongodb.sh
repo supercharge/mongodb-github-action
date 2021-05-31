@@ -64,7 +64,7 @@ echo "#########################################"
 echo "Initiating replica set [$MONGODB_REPLICA_SET]"
 echo "#########################################"
 
-rsInitiated = docker exec --tty mongodb mongo --port $MONGODB_PORT --eval "
+docker exec --tty mongodb mongo --port $MONGODB_PORT --eval "
   rs.initiate({
     \"_id\": \"$MONGODB_REPLICA_SET\",
     \"members\": [ {
@@ -73,11 +73,5 @@ rsInitiated = docker exec --tty mongodb mongo --port $MONGODB_PORT --eval "
     } ]
   })
 "
-
-if [ $? -ne 0 ]; then
-  echo "Failed to initiate replica set"
-  echo "$rsInitiated"
-  exit $?
-fi
 
 echo "Success! Initiated replica set [$MONGODB_REPLICA_SET]"
