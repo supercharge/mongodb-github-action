@@ -24,7 +24,7 @@ docker run --name mongodb --publish $MONGODB_PORT:27017 --detach mongo:$MONGODB_
 
 echo "Waiting for MongoDB to accept connections"
 TIMER=0
-until docker exec --tty mongodb mongo --eval "db.serverStatus()"
+until docker exec --tty mongodb mongo --port $MONGODB_PORT --eval "db.serverStatus()"
 do
   sleep 1
   echo "."
@@ -37,7 +37,7 @@ do
 done
 
 echo "Initiating replica set [$MONGODB_REPLICA_SET]"
-docker exec --tty mongodb mongo --eval "
+docker exec --tty mongodb mongo --port $MONGODB_PORT --eval "
   rs.initiate({
     \"_id\": \"$MONGODB_REPLICA_SET\",
     \"members\": [ {
