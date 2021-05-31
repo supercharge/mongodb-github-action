@@ -5,9 +5,9 @@ const Mongoose = require('mongoose')
 const { expect } = require('@hapi/code')
 
 const { MONGODB_PORT = 27017 } = process.env
-console.log('------------------------------------------------------');
-console.log('MONGODB_PORT -> ' + MONGODB_PORT);
-console.log('------------------------------------------------------');
+console.log('------------------------------------------------------')
+console.log('MONGODB_PORT -> ' + MONGODB_PORT)
+console.log('------------------------------------------------------')
 
 const { describe, it, before, after } = (exports.lab = Lab.script())
 
