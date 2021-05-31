@@ -1,6 +1,26 @@
 # Changelog
 
 
+## [1.5.0](https://github.com/superchargejs/mongodb-github-action/compare/v1.4.1...v1.5.0) - 2021-05-31
+
+### Added
+- refined tests for custom ports
+- refined custom port handling when using replica sets
+- extended output for better debugging in GitHub Actions
+
+
+## [1.4.1](https://github.com/superchargejs/mongodb-github-action/compare/v1.4.0...v1.4.1) - 2021-05-24
+
+### Updated
+- use strings for `mongodb-version` in Readme and GitHub Actions Workflows
+
+
+## [1.4.1](https://github.com/superchargejs/mongodb-github-action/compare/v1.4.0...v1.4.1) - 2021-05-24
+
+### Added
+- `mongodb-port` input allowing to start a MongoDB instance (or single-node replica set) on a custom port
+
+
 ## [1.4.0](https://github.com/superchargejs/mongodb-github-action/compare/v1.3.0...v1.4.0) - 2021-05-11
 
 ### Added
