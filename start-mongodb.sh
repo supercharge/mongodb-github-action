@@ -7,15 +7,21 @@ MONGODB_PORT=$3
 
 
 if [ -z "$MONGODB_VERSION" ]; then
+  echo ""
   echo "Missing MongoDB version in the [mongodb-version] input. Received value: $MONGODB_VERSION"
+  echo ""
+
   exit 2
 fi
 
 
 if [ -z "$MONGODB_REPLICA_SET" ]; then
+  echo ""
+  echo "#########################################"
   echo "Starting single-node instance, no replica set"
   echo "  - port [$MONGODB_PORT]"
   echo "  - version [$MONGODB_VERSION]"
+  echo "#########################################"
 
   docker run --name mongodb --publish $MONGODB_PORT:27017 --detach mongo:$MONGODB_VERSION
   return
