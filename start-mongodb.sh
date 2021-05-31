@@ -64,13 +64,20 @@ echo "#########################################"
 echo "Initiating replica set [$MONGODB_REPLICA_SET]"
 echo "#########################################"
 
-docker exec --tty mongodb mongo --port $MONGODB_PORT --eval "
+rsInitiated = docker exec --tty mongodb mongo --port $MONGODB_PORT --eval "
   rs.initiate({
     \"_id\": \"$MONGODB_REPLICA_SET\",
     \"members\": [ {
        \"_id\": 0,
-      \"host\": \"localhost\"
+      \"host\": \"localhost:$MONGODB_PORT\"
     } ]
   })
 "
-echo "Check! Initiated replica set [$MONGODB_REPLICA_SET]"
+
+if [ $? -ne 0 ]; then
+  echo "Failed to initiate replica set"
+  echo "$rsInitiated"
+  exit $?
+fi
+
+echo "Success! Initiated replica set [$MONGODB_REPLICA_SET]"
