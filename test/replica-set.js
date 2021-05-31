@@ -7,6 +7,7 @@ const { expect } = require('@hapi/code')
 const { MONGODB_PORT = 27017, MONGODB_REPLICA_SET = 'mongodb-test-rs' } = process.env
 console.log('------------------------------------------------------')
 console.log('MONGODB_PORT -> ' + MONGODB_PORT)
+console.log('MONGODB_REPLICA_SET -> ' + MONGODB_REPLICA_SET)
 console.log('------------------------------------------------------')
 
 const { describe, it, before, after } = (exports.lab = Lab.script())
@@ -15,16 +16,11 @@ describe('MongoDB Replica Set ->', () => {
   before(async () => {
     console.log('connecting to MongoDB RS using connection string: ' + `mongodb://localhost:${MONGODB_PORT}/test`)
 
-    await Mongoose.connect(`mongodb://localhost:${MONGODB_PORT}/test`, {
+    await Mongoose.connect(`mongodb://localhost:${MONGODB_PORT}/test?replicaSet=${MONGODB_REPLICA_SET}`, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
-      replicaSet: MONGODB_REPLICA_SET,
       serverSelectionTimeoutMS: 1500
     })
-
-    console.log('Mongoose connected')
-    console.log(Mongoose.connection)
-    console.log(Mongoose.connection.db)
   })
 
   after(async () => {
