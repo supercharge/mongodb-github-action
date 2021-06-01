@@ -17,11 +17,11 @@ fi
 
 if [ -z "$MONGODB_REPLICA_SET" ]; then
   echo ""
-  echo "#########################################"
+  echo "#############################################"
   echo "Starting single-node instance, no replica set"
   echo "  - port [$MONGODB_PORT]"
   echo "  - version [$MONGODB_VERSION]"
-  echo "#########################################"
+  echo "#############################################"
 
   docker run --name mongodb --publish $MONGODB_PORT:27017 --detach mongo:$MONGODB_VERSION
   return
@@ -29,12 +29,12 @@ fi
 
 
 echo ""
-echo "#########################################"
+echo "###########################################"
 echo "Starting MongoDB as single-node replica set"
 echo "  - port [$MONGODB_PORT]"
 echo "  - version [$MONGODB_VERSION]"
 echo "  - replica set [$MONGODB_REPLICA_SET]"
-echo "#########################################"
+echo "###########################################"
 
 docker run --name mongodb --publish $MONGODB_PORT:$MONGODB_PORT --detach mongo:$MONGODB_VERSION mongod --replSet $MONGODB_REPLICA_SET --port $MONGODB_PORT
 
@@ -88,3 +88,12 @@ docker exec --tty mongodb mongo --port $MONGODB_PORT --eval "
 "
 
 echo "Success! Initiated replica set [$MONGODB_REPLICA_SET]"
+
+echo ""
+echo "##############################################"
+echo "Checking replica set status [$MONGODB_REPLICA_SET]"
+echo "##############################################"
+
+docker exec --tty mongodb mongo --port $MONGODB_PORT --eval "
+  rs.status()
+"
