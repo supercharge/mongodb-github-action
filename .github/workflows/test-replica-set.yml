@@ -4,13 +4,14 @@ on: [push, pull_request]
 
 jobs:
   single-node-replica-set-on-default-port:
+    name: MongoDB RS on default port v${{ matrix.mongodb-version }} — Node.js v${{ matrix.node-version }}
+
     runs-on: ubuntu-latest
     strategy:
       matrix:
         node-version: [12, 14, 16]
         mongodb-version: ['4.0', '4.2', '4.4']
 
-    name: MongoDB RS on default port v${{ matrix.mongodb-version }} — Node.js v${{ matrix.node-version }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
