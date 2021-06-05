@@ -26,9 +26,9 @@ if [ -z "$MONGODB_REPLICA_SET" ]; then
   echo "#############################################"
 
   if [ ! -z "$DOCKER_NETWORK" ]; then
-    docker run --name mongodb --publish $MONGODB_PORT:MONGODB_PORT --detach --network $DOCKER_NETWORK mongo:$MONGODB_VERSION --port $MONGODB_PORT
+    docker run --name mongodb --publish $MONGODB_PORT:$MONGODB_PORT --detach --network $DOCKER_NETWORK mongo:$MONGODB_VERSION --port $MONGODB_PORT
   else
-    docker run --name mongodb --publish $MONGODB_PORT:MONGODB_PORT --detach mongo:$MONGODB_VERSION --port $MONGODB_PORT
+    docker run --name mongodb --publish $MONGODB_PORT:$MONGODB_PORT --detach mongo:$MONGODB_VERSION --port $MONGODB_PORT
   fi
 
   return
@@ -44,9 +44,9 @@ echo "  - replica set [$MONGODB_REPLICA_SET]"
 echo "###########################################"
 
 if [ ! -z "$DOCKER_NETWORK" ]; then
-  docker run --name mongodb --publish $MONGODB_PORT:MONGODB_PORT --detach --network $DOCKER_NETWORK mongo:$MONGODB_VERSION --port $MONGODB_PORT --replSet $MONGODB_REPLICA_SET
+  docker run --name mongodb --publish $MONGODB_PORT:$MONGODB_PORT --detach --network $DOCKER_NETWORK mongo:$MONGODB_VERSION --port $MONGODB_PORT --replSet $MONGODB_REPLICA_SET
 else
-  docker run --name mongodb --publish $MONGODB_PORT:MONGODB_PORT --detach mongo:$MONGODB_VERSION --port $MONGODB_PORT --replSet $MONGODB_REPLICA_SET
+  docker run --name mongodb --publish $MONGODB_PORT:$MONGODB_PORT --detach mongo:$MONGODB_VERSION --port $MONGODB_PORT --replSet $MONGODB_REPLICA_SET
 fi
 
 echo ""
