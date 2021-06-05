@@ -18,7 +18,7 @@ fi
 
 
 # Build command that will start the MongoDB container
-mongodbContainer=(
+mongodbContainer=$(
   --name mongodb
   --publish $MONGODB_PORT:MONGODB_PORT
   --port $MONGODB_PORT
@@ -26,7 +26,7 @@ mongodbContainer=(
   mongo:$MONGODB_VERSION
 )
 
-if [ -v "$DOCKER_NETWORK" ]; then
+if [ ! -z "$DOCKER_NETWORK" ]; then
   mongodbContainer+="--network $DOCKER_NETWORK"
 fi
 
