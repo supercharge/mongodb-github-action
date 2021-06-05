@@ -18,7 +18,7 @@ fi
 
 
 # Build command that will start the MongoDB container
-mongodbContainer = (
+mongodbContainer=(
   --name mongodb
   --publish $MONGODB_PORT:MONGODB_PORT
   --port $MONGODB_PORT
@@ -27,7 +27,7 @@ mongodbContainer = (
 )
 
 if [ -v "$DOCKER_NETWORK" ]; then
-  mongodbContainer += "--network $DOCKER_NETWORK"
+  mongodbContainer+="--network $DOCKER_NETWORK"
 fi
 
 
@@ -52,7 +52,7 @@ echo "  - version [$MONGODB_VERSION]"
 echo "  - replica set [$MONGODB_REPLICA_SET]"
 echo "###########################################"
 
-mongodbContainer += "--replSet $MONGODB_REPLICA_SET"
+mongodbContainer+="--replSet $MONGODB_REPLICA_SET"
 
 docker run "$mongodbContainer"
 
