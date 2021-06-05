@@ -21,6 +21,10 @@ inputs:
     required: false
     default: 27017
 
+  docker-network:
+    description: 'The Docker network name used by this MongoDB container'
+    required: false
+
 runs:
   using: 'docker'
   image: 'Dockerfile'
@@ -28,3 +32,4 @@ runs:
     - ${{ inputs.mongodb-version }}
     - ${{ inputs.mongodb-replica-set }}
     - ${{ inputs.mongodb-port }}
+    - ${{ inputs.docker-network }}
