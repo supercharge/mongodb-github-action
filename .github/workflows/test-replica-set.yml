@@ -1,6 +1,6 @@
 name: Replica Set Tests
 
-on: [push]
+on: [push, pull_request]
 
 jobs:
   single-node-replica-set-on-default-port:

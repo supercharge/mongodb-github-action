@@ -1,6 +1,6 @@
 name: Start MongoDB Server
 
-on: [push]
+on: [push, pull_request]
 
 jobs:
   mongodb-action:
