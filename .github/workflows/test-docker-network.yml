@@ -1,4 +1,4 @@
-name: Single Instance Tests
+name: Docker Network
 
 on: [push, pull_request]
 
@@ -20,7 +20,7 @@ jobs:
         uses: ./
         with:
           mongodb-version: ${{ matrix.mongodb-version }}
-          docker-network: ${{ job.services.network }}
+          docker-network: ${{ job.container.network }}
 
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1

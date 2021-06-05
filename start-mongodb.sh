@@ -23,6 +23,7 @@ if [ -z "$MONGODB_REPLICA_SET" ]; then
   echo "Starting single-node instance, no replica set"
   echo "  - port [$MONGODB_PORT]"
   echo "  - version [$MONGODB_VERSION]"
+  echo "  - docker-network [$DOCKER_NETWORK]"
   echo "#############################################"
 
   if [ ! -z "$DOCKER_NETWORK" ]; then
@@ -41,6 +42,7 @@ echo "Starting MongoDB as single-node replica set"
 echo "  - port [$MONGODB_PORT]"
 echo "  - version [$MONGODB_VERSION]"
 echo "  - replica set [$MONGODB_REPLICA_SET]"
+echo "  - docker-network [$DOCKER_NETWORK]"
 echo "###########################################"
 
 if [ ! -z "$DOCKER_NETWORK" ]; then
