@@ -11,6 +11,10 @@ const { describe, it } = (exports.lab = Lab.script())
 describe('MongoDB Single Instance ->', () => {
   const connectionString = `mongodb://${MONGODB_HOST}:${MONGODB_PORT}/test`
 
+  console.log('---------------------------------------------------------------------')
+  console.log('connecting to MongoDB using connection string -> ' + connectionString)
+  console.log('---------------------------------------------------------------------')
+
   it('connects to MongoDB', async () => {
     await expect(
       Mongoose.connect(connectionString, {
