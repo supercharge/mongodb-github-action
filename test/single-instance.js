@@ -4,12 +4,16 @@ const Lab = require('@hapi/lab')
 const Mongoose = require('mongoose')
 const { expect } = require('@hapi/code')
 
+const { MONGODB_HOST = 'localhost', MONGODB_PORT = 27017 } = process.env
+
 const { describe, it } = (exports.lab = Lab.script())
 
 describe('MongoDB Single Instance ->', () => {
+  const connectionString = `mongodb://${MONGODB_HOST}:${MONGODB_PORT}/test`
+
   it('connects to MongoDB', async () => {
     await expect(
-      Mongoose.connect('mongodb://localhost', {
+      Mongoose.connect(connectionString, {
         useNewUrlParser: true,
         useUnifiedTopology: true
       })
