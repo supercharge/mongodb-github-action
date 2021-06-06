@@ -66,3 +66,36 @@ jobs:
         run: npm test ./test/custom-port.js
         env:
           CI: true
+
+
+  single-instance-with-network-alias:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        mongodb-version: ['4.2']
+        node-version: [14]
+
+    name: MongoDB v${{ matrix.mongodb-version }} — Node.js v${{ matrix.node-version }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Start MongoDB Server v${{ matrix.mongodb-version }}
+        uses: ./
+        with:
+          mongodb-version: ${{ matrix.mongodb-version }}
+          mongodb-port: ${{ matrix.mongodb-port }}
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests
+        run: npm test ./test/single-instance.js
+        env:
+          CI: true
+          MONGODB_HOST: mongodb
