@@ -15,6 +15,17 @@ if [ -z "$MONGODB_VERSION" ]; then
 fi
 
 
+echo ""
+echo "##############################################"
+echo "Removing any existing MongoDB Docker container"
+echo "##############################################"
+
+if [ "$(docker ps -aq -f name=mongodb)" ]; then
+    docker stop mongodb
+    docker rm mongodb
+fi
+
+
 if [ -z "$MONGODB_REPLICA_SET" ]; then
   echo ""
   echo "#############################################"
@@ -24,9 +35,11 @@ if [ -z "$MONGODB_REPLICA_SET" ]; then
   echo "#############################################"
 
   docker run --name mongodb --publish $MONGODB_PORT:27017 --network-alias mongodb --detach mongo:$MONGODB_VERSION
+
+  docker ps
+
   return
 fi
-
 
 echo ""
 echo "###########################################"
