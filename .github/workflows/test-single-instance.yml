@@ -36,6 +36,8 @@ jobs:
 
 
   single-instance-on-custom-port:
+    name: MongoDB on custom port v${{ matrix.mongodb-version }} — Node.js v${{ matrix.node-version }}
+
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -43,7 +45,6 @@ jobs:
         mongodb-version: ['4.0', '4.2', '4.4']
         node-version: [12, 14, 16]
 
-    name: MongoDB on custom port v${{ matrix.mongodb-version }} — Node.js v${{ matrix.node-version }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -69,13 +70,14 @@ jobs:
 
 
   single-instance-in-node-container:
+    name: Container to Container connection for MongoDB v${{ matrix.mongodb-version }} — Node.js v${{ matrix.node-version }}
+
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        mongodb-version: ['4.0', '4.2', '4.4']
-        node-version: [12, 14, 16]
+        mongodb-version: ['4.2']
+        node-version: [14]
 
-    name: MongoDB on custom port v${{ matrix.mongodb-version }} — Node.js v${{ matrix.node-version }}
     container: node:14
     steps:
       - name: Checkout

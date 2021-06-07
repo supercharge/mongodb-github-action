@@ -37,6 +37,8 @@ jobs:
           MONGODB_REPLICA_SET: mongodb-test-rs
 
   single-node-replica-set-on-custom-port:
+    name: MongoDB v${{ matrix.mongodb-version }} RS on custom port — Node.js v${{ matrix.node-version }}
+
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -44,7 +46,6 @@ jobs:
         mongodb-port: [23456]
         mongodb-version: ['4.0', '4.2', '4.4']
 
-    name: MongoDB v${{ matrix.mongodb-version }} RS on custom port — Node.js v${{ matrix.node-version }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
