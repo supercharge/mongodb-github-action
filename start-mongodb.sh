@@ -37,7 +37,7 @@ if [ -z "$MONGODB_REPLICA_SET" ]; then
   echo "  - version [$MONGODB_VERSION]"
   echo "#############################################"
 
-  docker run --name mongodb --publish $MONGODB_PORT:27017 --network-alias mongodb --detach mongo:$MONGODB_VERSION
+  docker run --name mongodb --publish $MONGODB_PORT:27017 --detach mongo:$MONGODB_VERSION
 
   docker ps
   echo ""
@@ -56,7 +56,7 @@ echo "  - version [$MONGODB_VERSION]"
 echo "  - replica set [$MONGODB_REPLICA_SET]"
 echo "###########################################"
 
-docker run --name mongodb --publish $MONGODB_PORT:$MONGODB_PORT --network-alias mongodb --detach mongo:$MONGODB_VERSION mongod --replSet $MONGODB_REPLICA_SET --port $MONGODB_PORT
+docker run --name mongodb --publish $MONGODB_PORT:$MONGODB_PORT --detach mongo:$MONGODB_VERSION mongod --replSet $MONGODB_REPLICA_SET --port $MONGODB_PORT
 
 
 echo ""
