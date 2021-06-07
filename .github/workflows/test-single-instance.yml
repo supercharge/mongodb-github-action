@@ -11,7 +11,7 @@ jobs:
         node-version: [14]
 
     name: MongoDB v${{ matrix.mongodb-version }} — Node.js v${{ matrix.node-version }}
-    container: node:14
+    # container: node:14
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -34,4 +34,4 @@ jobs:
         run: npm test ./test/single-instance.js
         env:
           CI: true
-          MONGODB_HOST: "0.0.0.0"
+          # MONGODB_HOST: "0.0.0.0"
