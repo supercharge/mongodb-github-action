@@ -34,4 +34,4 @@ jobs:
         run: npm test ./test/single-instance.js
         env:
           CI: true
-          # MONGODB_HOST: "0.0.0.0"
+          MONGODB_HOST: mongodb
