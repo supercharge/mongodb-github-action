@@ -3,7 +3,7 @@
 # Map input values from the GitHub Actions workflow to shell variables
 MONGODB_VERSION=$1
 MONGODB_REPLICA_SET=$2
-MONGODB_PORT=$3
+MONGODB_PORT=${3:-27017}
 
 
 if [ -z "$MONGODB_VERSION" ]; then
@@ -23,6 +23,8 @@ echo "##############################################"
 if [ "$(docker ps -aq -f name=mongodb)" ]; then
     docker stop mongodb
     docker rm mongodb
+else
+  echo "Nothing to clean up. No container named [mongodb] running."
 fi
 
 
@@ -37,6 +39,10 @@ if [ -z "$MONGODB_REPLICA_SET" ]; then
   docker run --name mongodb --publish $MONGODB_PORT:27017 --network-alias mongodb --detach mongo:$MONGODB_VERSION
 
   docker ps
+  echo ""
+  echo "#############################################"
+  echo ""
+  docker inspect mongodb
 
   return
 fi
