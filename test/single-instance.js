@@ -21,7 +21,7 @@ describe('MongoDB Single Instance ->', () => {
 
   it('connects to MongoDB', async () => {
     await expect(
-      await Mongoose.connect(connectionString, {
+      Mongoose.connect(connectionString, {
         useNewUrlParser: true,
         useUnifiedTopology: true
       })
@@ -30,7 +30,7 @@ describe('MongoDB Single Instance ->', () => {
 
   it('fails to connect to non-existent MongoDB instance', async () => {
     await expect(
-      await Mongoose.connect('mongodb://localhost:27018', {
+      Mongoose.connect('mongodb://localhost:27018', {
         useNewUrlParser: true,
         useUnifiedTopology: true,
         connectTimeoutMS: 1000,
