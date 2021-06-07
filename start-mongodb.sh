@@ -23,6 +23,7 @@ echo "##############################################"
 if [ "$(docker ps -aq -f name=mongodb)" ]; then
     docker stop mongodb
     docker rm mongodb
+    echo "Removed existing [mongodb] docker container."
 else
   echo "Nothing to clean up. No container named [mongodb] running."
 fi
