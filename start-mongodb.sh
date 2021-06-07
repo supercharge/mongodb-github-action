@@ -5,6 +5,8 @@ MONGODB_VERSION=$1
 MONGODB_REPLICA_SET=$2
 MONGODB_PORT=${3:-27017}
 
+DOCKER_NETWORK=$4
+
 
 if [ -z "$MONGODB_VERSION" ]; then
   echo ""
@@ -35,9 +37,15 @@ if [ -z "$MONGODB_REPLICA_SET" ]; then
   echo "Starting single-node instance, no replica set"
   echo "  - port [$MONGODB_PORT]"
   echo "  - version [$MONGODB_VERSION]"
+  echo "  - docker-network [$DOCKER_NETWORK]"
   echo "#############################################"
 
-  docker run --name mongodb --publish $MONGODB_PORT:27017 --detach mongo:$MONGODB_VERSION
+
+  if [ ! -z "$DOCKER_NETWORK" ]; then
+    docker run --name mongodb --publish $MONGODB_PORT:$MONGODB_PORT --detach --network $DOCKER_NETWORK mongo:$MONGODB_VERSION --port $MONGODB_PORT
+  else
+    docker run --name mongodb --publish $MONGODB_PORT:$MONGODB_PORT --detach mongo:$MONGODB_VERSION --port $MONGODB_PORT
+  fi
 
   docker ps
   echo ""
@@ -54,10 +62,14 @@ echo "Starting MongoDB as single-node replica set"
 echo "  - port [$MONGODB_PORT]"
 echo "  - version [$MONGODB_VERSION]"
 echo "  - replica set [$MONGODB_REPLICA_SET]"
+echo "  - docker-network [$DOCKER_NETWORK]"
 echo "###########################################"
 
-docker run --name mongodb --publish $MONGODB_PORT:$MONGODB_PORT --detach mongo:$MONGODB_VERSION mongod --replSet $MONGODB_REPLICA_SET --port $MONGODB_PORT
-
+if [ ! -z "$DOCKER_NETWORK" ]; then
+  docker run --name mongodb --publish $MONGODB_PORT:$MONGODB_PORT --detach --network $DOCKER_NETWORK mongo:$MONGODB_VERSION --port $MONGODB_PORT --replSet $MONGODB_REPLICA_SET
+else
+  docker run --name mongodb --publish $MONGODB_PORT:$MONGODB_PORT --detach mongo:$MONGODB_VERSION --port $MONGODB_PORT --replSet $MONGODB_REPLICA_SET
+fi
 
 echo ""
 echo "#########################################"

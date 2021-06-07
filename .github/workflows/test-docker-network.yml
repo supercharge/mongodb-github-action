@@ -1,0 +1,36 @@
+name: Docker Network
+
+on: [push, pull_request]
+
+jobs:
+  single-instance-in-docker-network:
+    name: MongoDB Docker Container in network of GitHub Actions Runner
+
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [12]
+        mongodb-version: ['4.0']
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Start MongoDB Server v${{ matrix.mongodb-version }}
+        uses: ./
+        with:
+          mongodb-version: ${{ matrix.mongodb-version }}
+          docker-network: ${{ job.container.network }}
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests
+        run: npm test ./test/single-instance.js
+        env:
+          CI: true
