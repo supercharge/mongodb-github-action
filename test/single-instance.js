@@ -4,7 +4,7 @@ const Lab = require('@hapi/lab')
 const Mongoose = require('mongoose')
 const { expect } = require('@hapi/code')
 
-const { describe, it, afterEach } = (exports.lab = Lab.script())
+const { describe, it } = (exports.lab = Lab.script())
 
 const { MONGODB_HOST = 'localhost', MONGODB_PORT = 27017 } = process.env
 
@@ -15,12 +15,6 @@ console.log('connecting to MongoDB using connection string -> ' + connectionStri
 console.log('---------------------------------------------------------------------')
 
 describe('MongoDB Single Instance ->', () => {
-  afterEach(async () => {
-    try {
-      await Mongoose.disconnect()
-    } catch (error) {}
-  })
-
   it('connects to MongoDB', async () => {
     await expect(
       Mongoose.connect(connectionString, {
