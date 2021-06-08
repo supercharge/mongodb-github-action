@@ -88,14 +88,11 @@ docker exec --tty mongodb mongo --port $MONGODB_PORT --eval "
 "
 
 echo "Success! Initiated replica set [$MONGODB_REPLICA_SET]"
+echo "::endgroup::"
 
-echo ""
-echo "##############################################"
-echo "Checking replica set status [$MONGODB_REPLICA_SET]"
-echo "##############################################"
 
+echo "::group::Checking replica set status [$MONGODB_REPLICA_SET]"
 docker exec --tty mongodb mongo --port $MONGODB_PORT --eval "
   rs.status()
 "
-
 echo "::endgroup::"
