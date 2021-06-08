@@ -17,11 +17,7 @@ if [ -z "$MONGODB_VERSION" ]; then
 fi
 
 
-echo ""
-echo "############################################"
-echo "Removing existing [mongodb] Docker container"
-echo "############################################"
-
+echo "::group::Removing existing [mongodb] Docker container"
 if [ "$(docker ps -aq -f name=mongodb)" ]; then
     docker stop mongodb
     docker rm mongodb
@@ -29,57 +25,42 @@ if [ "$(docker ps -aq -f name=mongodb)" ]; then
 else
   echo "Nothing to clean up. No container named [mongodb] running."
 fi
+echo "::endgroup::"
 
 
 if [ -z "$MONGODB_REPLICA_SET" ]; then
-  echo ""
-  echo "#############################################"
-  echo "Starting single-node instance, no replica set"
+  echo "::group::Starting single-node instance, no replica set"
   echo "  - port [$MONGODB_PORT]"
   echo "  - version [$MONGODB_VERSION]"
   echo "  - docker-network [$DOCKER_NETWORK]"
-  echo "#############################################"
-
-
-  if [ ! -z "$DOCKER_NETWORK" ]; then
-    docker run --name mongodb --publish $MONGODB_PORT:$MONGODB_PORT --detach --network $DOCKER_NETWORK mongo:$MONGODB_VERSION --port $MONGODB_PORT
-  else
-    docker run --name mongodb --publish $MONGODB_PORT:$MONGODB_PORT --detach mongo:$MONGODB_VERSION --port $MONGODB_PORT
-  fi
-
-  docker ps
   echo ""
-  echo "#############################################"
-  echo ""
-  docker inspect mongodb
+
+  docker run --name mongodb --publish $MONGODB_PORT:27017 --detach mongo:$MONGODB_VERSION
+  echo "::endgroup::"
 
   return
 fi
 
 
-echo ""
-echo "###########################################"
-echo "Starting MongoDB as single-node replica set"
+echo "::group::Starting MongoDB as single-node replica set"
 echo "  - port [$MONGODB_PORT]"
 echo "  - version [$MONGODB_VERSION]"
 echo "  - replica set [$MONGODB_REPLICA_SET]"
 echo "  - docker-network [$DOCKER_NETWORK]"
-echo "###########################################"
-
+echo ""
 
 if [ ! -z "$DOCKER_NETWORK" ]; then
   docker run --name mongodb --publish $MONGODB_PORT:$MONGODB_PORT --detach --network $DOCKER_NETWORK mongo:$MONGODB_VERSION --port $MONGODB_PORT --replSet $MONGODB_REPLICA_SET
 else
   docker run --name mongodb --publish $MONGODB_PORT:$MONGODB_PORT --detach mongo:$MONGODB_VERSION --port $MONGODB_PORT --replSet $MONGODB_REPLICA_SET
 fi
+echo "::endgroup::"
 
-echo ""
-echo "#########################################"
-echo "Waiting for MongoDB to accept connections"
-echo "#########################################"
 
+echo "::group::Waiting for MongoDB to accept connections"
 sleep 1
 TIMER=0
+
 until docker exec --tty mongodb mongo --port $MONGODB_PORT --eval "db.serverStatus()" # &> /dev/null
 do
   sleep 1
@@ -91,25 +72,10 @@ do
     exit 2
   fi
 done
+echo "::endgroup::"
 
 
-echo ""
-echo "#########################################"
-echo "Initiating replica set [$MONGODB_REPLICA_SET]"
-echo "#########################################"
-
-echo "RS configuration -->"
-echo "
-  {
-    \"_id\": \"$MONGODB_REPLICA_SET\",
-    \"members\": [ {
-       \"_id\": 0,
-      \"host\": \"localhost:$MONGODB_PORT\"
-    } ]
-  })
-"
-
-echo ""
+echo "::group::Initiating replica set [$MONGODB_REPLICA_SET]"
 
 docker exec --tty mongodb mongo --port $MONGODB_PORT --eval "
   rs.initiate({
@@ -131,3 +97,5 @@ echo "##############################################"
 docker exec --tty mongodb mongo --port $MONGODB_PORT --eval "
   rs.status()
 "
+
+echo "::endgroup::"
