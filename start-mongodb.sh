@@ -35,7 +35,12 @@ if [ -z "$MONGODB_REPLICA_SET" ]; then
   echo "  - docker-network [$DOCKER_NETWORK]"
   echo ""
 
-  docker run --name mongodb --publish $MONGODB_PORT:27017 --detach mongo:$MONGODB_VERSION
+  if [ ! -z "$DOCKER_NETWORK" ]; then
+    docker run --name mongodb --publish $MONGODB_PORT:$MONGODB_PORT --detach --network $DOCKER_NETWORK mongo:$MONGODB_VERSION --port $MONGODB_PORT
+  else
+    docker run --name mongodb --publish $MONGODB_PORT:$MONGODB_PORT --detach mongo:$MONGODB_VERSION --port $MONGODB_PORT
+  fi
+
   echo "::endgroup::"
 
   return
