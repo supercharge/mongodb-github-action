@@ -16,7 +16,9 @@ console.log('-------------------------------------------------------------------
 
 describe('MongoDB Single Instance ->', () => {
   afterEach(async () => {
-    await Mongoose.disconnect()
+    try {
+      await Mongoose.disconnect()
+    } catch (error) {}
   })
 
   it('connects to MongoDB', async () => {
