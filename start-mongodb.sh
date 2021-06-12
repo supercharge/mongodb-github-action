@@ -3,7 +3,7 @@
 # Map input values from the GitHub Actions workflow to shell variables
 MONGODB_VERSION=$1
 MONGODB_REPLICA_SET=$2
-MONGODB_PORT=$3
+MONGODB_PORT=${3:-27017}
 
 DOCKER_NETWORK=$4
 
