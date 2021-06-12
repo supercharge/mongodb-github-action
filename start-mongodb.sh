@@ -7,6 +7,9 @@ MONGODB_PORT=${3:-27017}
 
 DOCKER_NETWORK=$4
 
+CONTAINER_NAME="mongodb"
+MONGODB_HOST="localhost"
+
 
 if [ -z "$MONGODB_VERSION" ]; then
   echo ""
@@ -36,9 +39,9 @@ if [ -z "$MONGODB_REPLICA_SET" ]; then
   echo ""
 
   if [ ! -z "$DOCKER_NETWORK" ]; then
-    docker run --name mongodb --publish $MONGODB_PORT:$MONGODB_PORT --detach --network $DOCKER_NETWORK mongo:$MONGODB_VERSION --port $MONGODB_PORT
+    docker run --name $CONTAINER_NAME --publish $MONGODB_PORT:$MONGODB_PORT --detach --network $DOCKER_NETWORK mongo:$MONGODB_VERSION --port $MONGODB_PORT
   else
-    docker run --name mongodb --publish $MONGODB_PORT:$MONGODB_PORT --detach mongo:$MONGODB_VERSION --port $MONGODB_PORT
+    docker run --name $CONTAINER_NAME --publish $MONGODB_PORT:$MONGODB_PORT --detach mongo:$MONGODB_VERSION --port $MONGODB_PORT
   fi
 
   echo "::endgroup::"
@@ -55,9 +58,14 @@ echo "  - docker-network [$DOCKER_NETWORK]"
 echo ""
 
 if [ ! -z "$DOCKER_NETWORK" ]; then
-  docker run --name mongodb --publish $MONGODB_PORT:$MONGODB_PORT --detach --network $DOCKER_NETWORK mongo:$MONGODB_VERSION --port $MONGODB_PORT --replSet $MONGODB_REPLICA_SET
+  docker run --name $CONTAINER_NAME --publish $MONGODB_PORT:$MONGODB_PORT --detach --network $DOCKER_NETWORK mongo:$MONGODB_VERSION --port $MONGODB_PORT --replSet $MONGODB_REPLICA_SET
+
+  # Assigning the container name as the MongoDB host when using
+  # a Docker network is required to correcly map the replica
+  # set topology in the network, making MongoDB reachable
+  MONGODB_HOST=$CONTAINER_NAME
 else
-  docker run --name mongodb --publish $MONGODB_PORT:$MONGODB_PORT --detach mongo:$MONGODB_VERSION --port $MONGODB_PORT --replSet $MONGODB_REPLICA_SET
+  docker run --name $CONTAINER_NAME --publish $MONGODB_PORT:$MONGODB_PORT --detach mongo:$MONGODB_VERSION --port $MONGODB_PORT --replSet $MONGODB_REPLICA_SET
 fi
 echo "::endgroup::"
 
@@ -87,7 +95,7 @@ docker exec --tty mongodb mongo --port $MONGODB_PORT --eval "
     \"_id\": \"$MONGODB_REPLICA_SET\",
     \"members\": [ {
        \"_id\": 0,
-      \"host\": \"localhost:$MONGODB_PORT\"
+      \"host\": \"$MONGODB_HOST:$MONGODB_PORT\"
     } ]
   })
 "
