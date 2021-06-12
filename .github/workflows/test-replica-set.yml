@@ -108,6 +108,5 @@ jobs:
         env:
           CI: true
           MONGODB_HOST: mongodb
-          MONGODB_PORT: ${{ matrix.mongodb-port }}
           MONGODB_REPLICA_SET: mongodb-test-rs
 
