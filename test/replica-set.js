@@ -4,13 +4,17 @@ const Lab = require('@hapi/lab')
 const Mongoose = require('mongoose')
 const { expect } = require('@hapi/code')
 
-const { MONGODB_PORT = 27017, MONGODB_REPLICA_SET = 'mongodb-test-rs' } = process.env
+const {
+  MONGODB_PORT = 27017,
+  MONGODB_HOST = 'localhost',
+  MONGODB_REPLICA_SET = 'mongodb-test-rs'
+} = process.env
 
 const { describe, it, before, after } = (exports.lab = Lab.script())
 
 describe('MongoDB Replica Set ->', () => {
   before(async () => {
-    const connectionString = `mongodb://localhost:${MONGODB_PORT}/test?replicaSet=${MONGODB_REPLICA_SET}`
+    const connectionString = `mongodb://${MONGODB_HOST}:${MONGODB_PORT}/test?replicaSet=${MONGODB_REPLICA_SET}`
 
     console.log('---------------------------------------------------------------------')
     console.log('connecting to MongoDB using connection string -> ' + connectionString)
