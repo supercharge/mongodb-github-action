@@ -14,17 +14,23 @@ const { describe, it, before, after } = (exports.lab = Lab.script())
 
 describe('MongoDB Replica Set ->', () => {
   before(async () => {
-    const connectionString = `mongodb://${MONGODB_HOST}:${MONGODB_PORT}/test?replicaSet=${MONGODB_REPLICA_SET}`
+    const connectionString = `mongodb://${MONGODB_HOST}:${MONGODB_PORT}/test`
 
     console.log('---------------------------------------------------------------------')
     console.log('connecting to MongoDB using connection string -> ' + connectionString)
     console.log('---------------------------------------------------------------------')
 
-    await Mongoose.connect(connectionString, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-      serverSelectionTimeoutMS: 1500
-    })
+    try {
+      await Mongoose.connect(connectionString, {
+        replicaSet: MONGODB_REPLICA_SET,
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+        serverSelectionTimeoutMS: 1500
+      })
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
   })
 
   after(async () => {
