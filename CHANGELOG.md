@@ -1,6 +1,12 @@
 # Changelog
 
 
+## [1.7.0](https://github.com/superchargejs/mongodb-github-action/compare/v1.6.0...v1.7.0) - 2021-xx-xx
+
+### Added
+- `docker-network` option can be used to connect the MongoDB container to a specific Docker network
+
+
 ## [1.6.0](https://github.com/superchargejs/mongodb-github-action/compare/v1.5.0...v1.6.0) - 2021-06-01
 
 ### Added
