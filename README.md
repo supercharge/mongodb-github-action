@@ -156,6 +156,51 @@ jobs:
 ```
 
 
+### With `--auth`
+Setting the `mongodb-username` and `mongodb-password` inputs. As per the [Dockerhub documentation](https://hub.docker.com/_/mongo), this automatically creates an admin user and enables `--auth` mode. _Caveat: Due to [this issue](https://github.com/docker-library/mongo/issues/211), you cannot enable user creation AND replica sets initially. Therefore, if you use this action to setup a replica set, please create your users through a separate script._
+
+The following example uses the username and password 'ci' and also sets an initial 'ci' database:
+
+```yaml
+name: Run tests
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [12.x, 14.x]
+        mongodb-version: ['4.0', '4.2', '4.4']
+
+    steps:
+    - name: Git checkout
+      uses: actions/checkout@v2
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: Start MongoDB
+      uses: supercharge/mongodb-github-action@1.6.0
+      with:
+        mongodb-version: ${{ matrix.mongodb-version }}
+        mongodb-db: ci
+        mongodb-username: ci
+        mongodb-password: ci
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Run tests
+      run: npm test
+      env:
+        CI: true
+```
+
+
 ## License
 MIT © [Supercharge](https://superchargejs.com)
 
