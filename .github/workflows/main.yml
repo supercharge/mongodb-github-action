@@ -10,9 +10,6 @@ jobs:
     strategy:
       matrix:
         mongodb-version: ['4.0', '4.2', '4.4']
-        mongodb-db: ['ci']
-        mongodb-username: ['ci']
-        mongodb-password: ['ci']
 
     steps:
       - name: Checkout
@@ -22,6 +19,3 @@ jobs:
         uses: ./
         with:
           mongodb-version: ${{ matrix.mongodb-version }}
-          mongodb-db: ${{ matrix.mongodb-db }}
-          mongodb-username: ${{ matrix.mongodb-username }}
-          mongodb-password: ${{ matrix.mongodb-password }}

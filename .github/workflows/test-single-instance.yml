@@ -11,9 +11,6 @@ jobs:
       matrix:
         node-version: [12, 14, 16]
         mongodb-version: ['4.0', '4.2', '4.4']
-        mongodb-db: ['ci']
-        mongodb-username: ['ci']
-        mongodb-password: ['ci']
 
     steps:
       - name: Checkout
@@ -23,9 +20,6 @@ jobs:
         uses: ./
         with:
           mongodb-version: ${{ matrix.mongodb-version }}
-          mongodb-db: ${{ matrix.mongodb-db }}
-          mongodb-username: ${{ matrix.mongodb-username }}
-          mongodb-password: ${{ matrix.mongodb-password }}
 
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
@@ -40,8 +34,6 @@ jobs:
         env:
           CI: true
           MONGODB_DB: ${{ matrix.mongodb-db }}
-          MONGODB_USERNAME: ${{ matrix.mongodb-username }}
-          MONGODB_PASSWORD: ${{ matrix.mongodb-password }}
 
 
   single-instance-on-custom-port:
@@ -50,9 +42,6 @@ jobs:
       matrix:
         mongodb-port: [12345]
         mongodb-version: ['4.0', '4.2', '4.4']
-        mongodb-db: ['ci']
-        mongodb-username: ['ci']
-        mongodb-password: ['ci']
         node-version: [12, 14, 16]
 
     name: MongoDB on custom port v${{ matrix.mongodb-version }} — Node.js v${{ matrix.node-version }}
@@ -65,9 +54,6 @@ jobs:
         with:
           mongodb-version: ${{ matrix.mongodb-version }}
           mongodb-port: ${{ matrix.mongodb-port }}
-          mongodb-db: ${{ matrix.mongodb-db }}
-          mongodb-username: ${{ matrix.mongodb-username }}
-          mongodb-password: ${{ matrix.mongodb-password }}
 
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
@@ -81,6 +67,3 @@ jobs:
         run: npm test ./test/custom-port.js
         env:
           CI: true
-          MONGODB_DB: ${{ matrix.mongodb-db }}
-          MONGODB_USERNAME: ${{ matrix.mongodb-username }}
-          MONGODB_PASSWORD: ${{ matrix.mongodb-password }}
