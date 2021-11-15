@@ -4,7 +4,7 @@ on: [push, pull_request]
 
 jobs:
   single-node-replica-set-on-default-port:
-    name: MongoDB RS on default port v${{ matrix.mongodb-version }} — Node.js v${{ matrix.node-version }}
+    name: MongoDB v${{ matrix.mongodb-version }} RS on default port — Node.js v${{ matrix.node-version }}
 
     runs-on: ubuntu-latest
     strategy:
