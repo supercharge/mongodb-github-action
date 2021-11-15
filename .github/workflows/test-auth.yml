@@ -1,4 +1,4 @@
-name: Single Instance Tests
+name: Single Instance With Auth
 
 on: [push, pull_request]
 
