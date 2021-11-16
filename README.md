@@ -31,7 +31,7 @@ This is useful when running tests against a MongoDB database.
 
 
 ## Usage
-A code example says more than a 1000 words. Here’s an exemplary GitHub Action using a MongoDB server in versions `4.0` and `4.2` to test a Node.js app:
+A code example says more than a 1000 words. Here’s an exemplary GitHub Action using a MongoDB server in versions `4.2` and `4.4` to test a Node.js app:
 
 ```yaml
 name: Run tests
@@ -43,20 +43,20 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [12.x, 14.x]
-        mongodb-version: ['4.0', '4.2', '4.4']
+        node-version: [14.x, 16.x]
+        mongodb-version: ['4.2', '4.4']
 
     steps:
     - name: Git checkout
       uses: actions/checkout@v2
 
     - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
+      uses: actions/setup-node@v2
       with:
         node-version: ${{ matrix.node-version }}
 
     - name: Start MongoDB
-      uses: supercharge/mongodb-github-action@1.6.0
+      uses: supercharge/mongodb-github-action@1.7.0
       with:
         mongodb-version: ${{ matrix.mongodb-version }}
 
@@ -83,20 +83,20 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [12.x, 14.x]
-        mongodb-version: ['4.0', '4.2', '4.4']
+        node-version: [14.x, 16.x]
+        mongodb-version: ['4.2', '4.4']
 
     steps:
     - name: Git checkout
       uses: actions/checkout@v2
 
     - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
+      uses: actions/setup-node@v2
       with:
         node-version: ${{ matrix.node-version }}
 
     - name: Start MongoDB
-      uses: supercharge/mongodb-github-action@1.6.0
+      uses: supercharge/mongodb-github-action@1.7.0
       with:
         mongodb-version: ${{ matrix.mongodb-version }}
         mongodb-replica-set: test-rs
@@ -112,8 +112,8 @@ jobs:
 ```
 
 
-### With a Replica Set
-You can run your tests against a MongoDB replica set by adding the `mongodb-replica-set: your-replicate-set-name` input. The value for `mongodb-replica-set` defines the name of your replica set. Replace `your-replicate-set-name` with the replica set name you want to use in your tests.
+### With a Replica Set (MongoDB `--replSet` Flag)
+You can run your tests against a MongoDB replica set by adding the `mongodb-replica-set: your-replicate-set-name` input in your action’s workflow. The value for `mongodb-replica-set` defines the name of your replica set. Replace `your-replicate-set-name` with the replica set name you want to use in your tests.
 
 The following example uses the replica set name `test-rs`:
 
@@ -127,20 +127,20 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [12.x, 14.x]
-        mongodb-version: ['4.0', '4.2', '4.4']
+        node-version: [14.x, 16.x]
+        mongodb-version: ['4.2', '4.4']
 
     steps:
     - name: Git checkout
       uses: actions/checkout@v2
 
     - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
+      uses: actions/setup-node@v2
       with:
         node-version: ${{ matrix.node-version }}
 
     - name: Start MongoDB
-      uses: supercharge/mongodb-github-action@1.6.0
+      uses: supercharge/mongodb-github-action@1.7.0
       with:
         mongodb-version: ${{ matrix.mongodb-version }}
         mongodb-replica-set: test-rs
@@ -156,13 +156,13 @@ jobs:
 ```
 
 
-### With `--auth`
-Setting the `mongodb-username` and `mongodb-password` inputs. As per the [Dockerhub documentation](https://hub.docker.com/_/mongo), this automatically creates an admin user and enables `--auth` mode. _Caveat: Due to [this issue](https://github.com/docker-library/mongo/issues/211), you cannot enable user creation AND replica sets initially. Therefore, if you use this action to setup a replica set, please create your users through a separate script._
+### With Authentication (MongoDB `--auth` Flag)
+Setting the `mongodb-username` and `mongodb-password` inputs. As per the [Dockerhub documentation](https://hub.docker.com/_/mongo), this automatically creates an admin user and enables `--auth` mode.
 
-The following example uses the username and password 'ci' and also sets an initial 'ci' database:
+The following example uses the username `supercharge`, password `secret` and also sets an initial `supercharge` database:
 
 ```yaml
-name: Run tests
+name: Run tests with authentication
 
 on: [push]
 
@@ -171,25 +171,25 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [12.x, 14.x]
-        mongodb-version: ['4.0', '4.2', '4.4']
+        node-version: [14.x, 16.x]
+        mongodb-version: ['4.2', '4.4']
 
     steps:
     - name: Git checkout
       uses: actions/checkout@v2
 
     - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
+      uses: actions/setup-node@v2
       with:
         node-version: ${{ matrix.node-version }}
 
     - name: Start MongoDB
-      uses: supercharge/mongodb-github-action@1.6.0
+      uses: supercharge/mongodb-github-action@1.7.0
       with:
         mongodb-version: ${{ matrix.mongodb-version }}
-        mongodb-db: ci
-        mongodb-username: ci
-        mongodb-password: ci
+        mongodb-username: supercharge
+        mongodb-password: secret
+        mongodb-db: supercharge
 
     - name: Install dependencies
       run: npm install
@@ -199,6 +199,8 @@ jobs:
       env:
         CI: true
 ```
+
+**Caveat:** due to [this issue](https://github.com/docker-library/mongo/issues/211), you **cannot enable user creation AND replica sets** initially. Therefore, if you use this action to setup a replica set, please create your users through a separate script.
 
 
 ## License
