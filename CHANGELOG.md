@@ -1,6 +1,17 @@
 # Changelog
 
 
+## [1.7.0](https://github.com/superchargejs/mongodb-github-action/compare/v1.6.0...v1.7.0) - 2021-11-16
+
+### Added
+- `mongodb-username` and `mongodb-password` inputs allowing you to configure the authentication credentials for a user created in the `admin` database (with the role of `root`)
+- `mongodb-db` input allowing you to create a database that is used for creation scripts
+
+### Updated
+- bump dependencies
+- use UVU and c8 for testing instead of @hapi/lab
+
+
 ## [1.6.0](https://github.com/superchargejs/mongodb-github-action/compare/v1.5.0...v1.6.0) - 2021-06-01
 
 ### Added
