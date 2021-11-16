@@ -4,13 +4,13 @@ on: [push, pull_request]
 
 jobs:
   single-instance-on-default-port:
-    name: MongoDB on default port v${{ matrix.mongodb-version }} — Node.js v${{ matrix.node-version }}
+    name: MongoDB v${{ matrix.mongodb-version }} — Node.js v${{ matrix.node-version }}
 
     runs-on: ubuntu-latest
     strategy:
       matrix:
         node-version: [12, 14, 16]
-        mongodb-version: ['4.0', '4.2', '4.4']
+        mongodb-version: ['4.0', '4.2', '4.4', '5.0']
 
     steps:
       - name: Checkout
@@ -44,7 +44,7 @@ jobs:
         mongodb-version: ['4.0', '4.2', '4.4']
         node-version: [12, 14, 16]
 
-    name: MongoDB on custom port v${{ matrix.mongodb-version }} — Node.js v${{ matrix.node-version }}
+    name: MongoDB v${{ matrix.mongodb-version }}, Port ${{ matrix.mongodb-version }} — Node.js v${{ matrix.node-version }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
