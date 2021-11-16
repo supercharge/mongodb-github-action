@@ -31,7 +31,7 @@ jobs:
         run: npm install
 
       - name: Run tests
-        run: npm test ./test/replica-set.js
+        run: npm test ./test/replica-set
         env:
           CI: true
           MONGODB_REPLICA_SET: mongodb-test-rs
@@ -65,7 +65,7 @@ jobs:
         run: npm install
 
       - name: Run tests
-        run: npm test ./test/replica-set.js
+        run: npm test ./test/replica-set
         env:
           CI: true
           MONGODB_PORT: ${{ matrix.mongodb-port }}

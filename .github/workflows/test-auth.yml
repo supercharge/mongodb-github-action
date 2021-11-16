@@ -36,7 +36,7 @@ jobs:
         run: npm install
 
       - name: Run tests
-        run: npm test ./test/single-instance.js
+        run: npm test ./test/single-instance
         env:
           CI: true
           MONGODB_DB: ${{ matrix.mongodb-db }}

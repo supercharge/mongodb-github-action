@@ -30,7 +30,7 @@ jobs:
         run: npm install
 
       - name: Run tests
-        run: npm test ./test/single-instance.js
+        run: npm test ./test/single-instance
         env:
           CI: true
           MONGODB_DB: ${{ matrix.mongodb-db }}
@@ -64,6 +64,6 @@ jobs:
         run: npm install
 
       - name: Run tests
-        run: npm test ./test/custom-port.js
+        run: npm test ./test/custom-port
         env:
           CI: true
