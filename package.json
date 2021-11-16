@@ -7,15 +7,15 @@
     "url": "https://github.com/supercharge/mongodb-github-action/issues"
   },
   "devDependencies": {
-    "@hapi/code": "~8.0.3",
-    "@hapi/lab": "~24.2.1",
+    "@hapi/code": "~8.0.4",
+    "@hapi/lab": "~24.4.0",
     "eslint": "~7.27.0",
     "eslint-config-standard": "~16.0.3",
-    "eslint-plugin-import": "~2.23.4",
+    "eslint-plugin-import": "~2.25.3",
     "eslint-plugin-node": "~11.1.0",
-    "eslint-plugin-promise": "~4.3.1",
+    "eslint-plugin-promise": "~5.1.1",
     "eslint-plugin-standard": "~4.1.0",
-    "mongoose": "~5.12.12"
+    "mongoose": "~6.0.13"
   },
   "engines": {
     "node": ">=8"

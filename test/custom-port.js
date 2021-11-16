@@ -9,10 +9,7 @@ const { describe, it } = (exports.lab = Lab.script())
 describe('MongoDB Instance on Custom Port ->', () => {
   it('connects to MongoDB on custom port 12345', async () => {
     await expect(
-      Mongoose.connect('mongodb://localhost:12345', {
-        useNewUrlParser: true,
-        useUnifiedTopology: true
-      })
+      Mongoose.connect('mongodb://localhost:12345')
     ).to.not.reject()
   })
 })
