@@ -25,7 +25,7 @@
 
 
 ## Introduction
-This GitHub Action starts a MongoDB server or MongoDB replica set. By default, the MongoDB server is available on the default port `27017`. You can configure a custom port using the `mongodb-port` input. The examples show how to use a custom port.
+This GitHub Action starts a MongoDB server or MongoDB replica set. By default, the MongoDB server is available on the default port `27017`. You can configure a custom port using the `mongodb-port` input. The examples show how to use a custom port. Mongo version must be specified in `mongodb-version` and it must be existing [Docker mongo tag](https://hub.docker.com/_/mongo?tab=tags). Default value is `latest`, other popular choices are `4.2`, `4.4` and `5.0`.
 
 This is useful when running tests against a MongoDB database.
 
