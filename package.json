@@ -7,8 +7,6 @@
     "url": "https://github.com/supercharge/mongodb-github-action/issues"
   },
   "devDependencies": {
-    "@hapi/code": "~8.0.4",
-    "@hapi/lab": "~24.4.0",
     "c8": "~7.10.0",
     "eslint": "~7.32.0",
     "eslint-config-standard": "~16.0.3",
