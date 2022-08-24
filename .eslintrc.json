@@ -1,13 +1,9 @@
 {
   "env": {
-    "es6": true,
     "node": true
   },
   "extends": [
-    "standard"
-  ],
-  "plugins": [
-    "standard"
+    "@supercharge"
   ],
   "parserOptions": {
     "ecmaVersion": 2018
