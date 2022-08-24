@@ -1,7 +1,7 @@
 'use strict'
 
 const { test } = require('uvu')
-const expect = require('expect')
+const { expect } = require('expect')
 const Mongoose = require('mongoose')
 
 const { MONGODB_USERNAME, MONGODB_PASSWORD, MONGODB_DB } = process.env
