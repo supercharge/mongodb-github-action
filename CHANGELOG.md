@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [1.8.0](https://github.com/superchargejs/mongodb-github-action/compare/v1.7.0...v1.8.0) - 2022-0x-xx
+
+### Updated
+- bump dependencies
+- use `@supercharge/eslint-config` instead of `eslint-config-standard`
+
+
 ## [1.7.0](https://github.com/superchargejs/mongodb-github-action/compare/v1.6.0...v1.7.0) - 2021-11-16
 
 ### Added
