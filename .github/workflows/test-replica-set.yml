@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [12, 14, 16]
+        node-version: [14, 16, 18]
         mongodb-version: ['4.0', '4.2', '4.4', '5.0']
 
     steps:
@@ -40,7 +40,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [12, 14, 16]
+        node-version: [14, 16, 18]
         mongodb-port: [23456]
         mongodb-version: ['4.0', '4.2', '4.4']
 

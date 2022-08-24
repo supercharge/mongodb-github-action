@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [12, 14, 16]
+        node-version: [14, 16, 18]
         mongodb-version: ['4.0', '4.2', '4.4', '5.0']
 
     steps:
@@ -42,7 +42,7 @@ jobs:
       matrix:
         mongodb-port: [12345]
         mongodb-version: ['4.0', '4.2', '4.4']
-        node-version: [12, 14, 16]
+        node-version: [14, 16, 18]
 
     name: MongoDB v${{ matrix.mongodb-version }}, Port ${{ matrix.mongodb-version }} — Node.js v${{ matrix.node-version }}
     steps:
