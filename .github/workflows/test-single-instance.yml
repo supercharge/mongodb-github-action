@@ -14,7 +14,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Start MongoDB Server v${{ matrix.mongodb-version }}
         uses: ./
@@ -22,7 +22,7 @@ jobs:
           mongodb-version: ${{ matrix.mongodb-version }}
 
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
 
@@ -47,7 +47,7 @@ jobs:
     name: MongoDB v${{ matrix.mongodb-version }}, Port ${{ matrix.mongodb-version }} — Node.js v${{ matrix.node-version }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Start MongoDB Server v${{ matrix.mongodb-version }}
         uses: ./
@@ -56,7 +56,7 @@ jobs:
           mongodb-port: ${{ matrix.mongodb-port }}
 
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
 
