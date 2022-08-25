@@ -17,6 +17,11 @@ if [ -z "$MONGODB_VERSION" ]; then
   exit 2
 fi
 
+if [[ $MONGODB_VERSION == 4* ]]; then
+  MONGO_CLIENT="mongo"
+else
+  MONGO_CLIENT="mongosh --quiet"
+fi
 
 if [ -z "$MONGODB_REPLICA_SET" ]; then
   echo "::group::Starting single-node instance, no replica set"
@@ -47,7 +52,7 @@ echo "::group::Waiting for MongoDB to accept connections"
 sleep 1
 TIMER=0
 
-until docker exec --tty mongodb mongosh --port $MONGODB_PORT --eval "db.serverStatus()" # &> /dev/null
+until docker exec --tty mongodb $MONGO_CLIENT --port $MONGODB_PORT --eval "db.serverStatus()" # &> /dev/null
 do
   sleep 1
   echo "."
@@ -63,7 +68,7 @@ echo "::endgroup::"
 
 echo "::group::Initiating replica set [$MONGODB_REPLICA_SET]"
 
-docker exec --tty mongodb mongo --port $MONGODB_PORT --eval "
+docker exec --tty mongodb $MONGO_CLIENT --port $MONGODB_PORT --eval "
   rs.initiate({
     \"_id\": \"$MONGODB_REPLICA_SET\",
     \"members\": [ {
@@ -78,7 +83,7 @@ echo "::endgroup::"
 
 
 echo "::group::Checking replica set status [$MONGODB_REPLICA_SET]"
-docker exec --tty mongodb mongo --port $MONGODB_PORT --eval "
+docker exec --tty mongodb $MONGO_CLIENT --port $MONGODB_PORT --eval "
   rs.status()
 "
 echo "::endgroup::"
