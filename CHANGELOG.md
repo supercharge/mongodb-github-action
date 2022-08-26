@@ -1,7 +1,12 @@
 # Changelog
 
 
-## [1.8.0](https://github.com/superchargejs/mongodb-github-action/compare/v1.7.0...v1.8.0) - 2022-0x-xx
+## [1.8.0](https://github.com/superchargejs/mongodb-github-action/compare/v1.7.0...v1.8.0) - 2022-08-26
+
+### Added
+- support MongoDB 6.x. Thanks to [Evandro aka ecarruda](https://github.com/ecarruda)!
+- use `mongo` for MongoDB 4.x release line
+- use `mongosh` for MongoDB 5.x and 6.x release lines
 
 ### Updated
 - bump dependencies
