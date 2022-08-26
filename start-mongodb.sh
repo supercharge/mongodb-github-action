@@ -51,6 +51,10 @@ echo "  - replica set [$MONGODB_REPLICA_SET]"
 echo ""
 
 docker run --name mongodb --publish $MONGODB_PORT:$MONGODB_PORT --detach mongo:$MONGODB_VERSION --replSet $MONGODB_REPLICA_SET --port $MONGODB_PORT
+if ! docker inspect -f "{{.State.Running}}" "mongodb"; then
+    echo "Docker didn't start."
+    exit 2
+fi
 echo "::endgroup::"
 
 
