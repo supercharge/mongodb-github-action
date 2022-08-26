@@ -17,11 +17,17 @@ if [ -z "$MONGODB_VERSION" ]; then
   exit 2
 fi
 
-if [[ $MONGODB_VERSION == 4* ]]; then
+
+echo "::group::Selecting correct MongoDB client"
+if [ "`echo $MONGODB_VERSION | cut -c1-1`" = "4" ]; then
   MONGO_CLIENT="mongo"
 else
   MONGO_CLIENT="mongosh --quiet"
 fi
+echo "  - Using [$MONGO_CLIENT]"
+echo ""
+echo "::endgroup::"
+
 
 if [ -z "$MONGODB_REPLICA_SET" ]; then
   echo "::group::Starting single-node instance, no replica set"
