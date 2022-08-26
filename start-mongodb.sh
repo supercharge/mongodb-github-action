@@ -19,7 +19,7 @@ fi
 
 
 echo "::group::Selecting correct MongoDB client"
-if [ "`echo $MONGODB_VERSION | cut -c1-1`" = "4" ]; then
+if [ "`echo $MONGODB_VERSION | cut -c 1`" = "4" ]; then
   MONGO_CLIENT="mongo"
 else
   MONGO_CLIENT="mongosh --quiet"
