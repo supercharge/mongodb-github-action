@@ -1,6 +1,12 @@
 # Changelog
 
 
+## [1.9.0](https://github.com/superchargejs/mongodb-github-action/compare/v1.8.0...v1.9.0) - 2022-08-xx
+
+### Added
+- exit early in case of Docker issues (e.g., unavailable MongoDB version)
+
+
 ## [1.8.0](https://github.com/superchargejs/mongodb-github-action/compare/v1.7.0...v1.8.0) - 2022-08-26
 
 ### Added
