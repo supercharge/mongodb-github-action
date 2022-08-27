@@ -44,7 +44,7 @@ jobs:
         mongodb-port: [23456]
         mongodb-version: ['4.0', '4.2', '4.4']
 
-    name: MongoDB v${{ matrix.mongodb-version }} RS, Port $${{ matrix.mongodb-port }} — Node.js v${{ matrix.node-version }}
+    name: MongoDB v${{ matrix.mongodb-version }} RS, Port ${{ matrix.mongodb-port }} — Node.js v${{ matrix.node-version }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
