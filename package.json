@@ -30,7 +30,7 @@
     "url": "git+https://github.com/supercharge/mongodb-github-action.git"
   },
   "scripts": {
-    "list-tests": "lab --assert @hapi/code --dry --verbose",
+    "lint": "eslint test --ext .js",
     "test": "c8 --include=dist uvu --ignore fixtures",
     "posttest": "c8 report --reporter=html"
   }
