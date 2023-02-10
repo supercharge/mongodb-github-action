@@ -1,10 +1,11 @@
 # Changelog
 
 
-## [1.9.0](https://github.com/superchargejs/mongodb-github-action/compare/v1.8.0...v1.9.0) - 2022-08-xx
+## [1.9.0](https://github.com/superchargejs/mongodb-github-action/compare/v1.8.0...v1.9.0) - 2023-02-10
 
 ### Added
 - exit early in case of Docker issues (e.g., unavailable MongoDB version)
+- validate GitHub Action typings using [krzema12/github-actions-typing](https://github.com/krzema12/github-actions-typing)
 
 ### Updated
 - bump dependencies
