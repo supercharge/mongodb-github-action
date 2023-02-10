@@ -1,7 +1,7 @@
 {
   "name": "@supercharge/mongodb-github-action",
   "description": "MongoDB GitHub Action",
-  "version": "1.8.0",
+  "version": "1.9.0",
   "author": "Marcus Pöhls <marcus@superchargejs.com>",
   "bugs": {
     "url": "https://github.com/supercharge/mongodb-github-action/issues"
