@@ -8,6 +8,23 @@ MONGODB_DB=$4
 MONGODB_USERNAME=$5
 MONGODB_PASSWORD=$6
 
+wait_for_mongo() {
+  echo "Waiting for MongoDB to accept connections"
+  sleep 1
+  TIMER=0
+
+  until docker exec --tty mongodb $MONGO_CLIENT --port $MONGODB_PORT --eval "db.runCommand({ping: 1})" # &> /dev/null
+  do
+    sleep 1
+    echo "."
+    TIMER=$((TIMER + 1))
+
+    if [[ $TIMER -eq 20 ]]; then
+      echo "MongoDB did not initialize within 20 seconds. Exiting."
+      exit 2
+    fi
+  done
+}
 
 if [ -z "$MONGODB_VERSION" ]; then
   echo ""
@@ -43,6 +60,7 @@ if [ -z "$MONGODB_REPLICA_SET" ]; then
       echo "Error starting MongoDB Docker container"
       exit 2
   fi
+  wait_for_mongo
   echo "::endgroup::"
 
   return
@@ -63,24 +81,7 @@ if [ $? -ne 0 ]; then
 fi
 echo "::endgroup::"
 
-
-echo "::group::Waiting for MongoDB to accept connections"
-sleep 1
-TIMER=0
-
-until docker exec --tty mongodb $MONGO_CLIENT --port $MONGODB_PORT --eval "db.serverStatus()" # &> /dev/null
-do
-  sleep 1
-  echo "."
-  TIMER=$((TIMER + 1))
-
-  if [[ $TIMER -eq 20 ]]; then
-    echo "MongoDB did not initialize within 20 seconds. Exiting."
-    exit 2
-  fi
-done
-echo "::endgroup::"
-
+wait_for_mongo
 
 echo "::group::Initiating replica set [$MONGODB_REPLICA_SET]"
 
