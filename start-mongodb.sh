@@ -9,11 +9,11 @@ MONGODB_USERNAME=$5
 MONGODB_PASSWORD=$6
 
 wait_for_mongo() {
-  echo "Waiting for MongoDB to accept connections"
+  echo "::group::Waiting for MongoDB to accept connections"
   sleep 1
   TIMER=0
 
-  until docker exec --tty mongodb $MONGO_CLIENT --port $MONGODB_PORT --eval "db.runCommand({ping: 1})" # &> /dev/null
+  until docker exec --tty mongodb $MONGO_CLIENT --port $MONGODB_PORT --eval "db.serverStatus()" # &> /dev/null
   do
     sleep 1
     echo "."
@@ -24,6 +24,7 @@ wait_for_mongo() {
       exit 2
     fi
   done
+  echo "::endgroup::"
 }
 
 if [ -z "$MONGODB_VERSION" ]; then
@@ -60,8 +61,8 @@ if [ -z "$MONGODB_REPLICA_SET" ]; then
       echo "Error starting MongoDB Docker container"
       exit 2
   fi
-  wait_for_mongo
   echo "::endgroup::"
+  wait_for_mongo
 
   return
 fi
