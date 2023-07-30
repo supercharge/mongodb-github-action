@@ -9,8 +9,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [14, 16, 18]
-        mongodb-version: ['4.0', '4.2', '4.4', '5.0', '6.0']
+        node-version: [18, 20]
+        mongodb-version: ['4.4', '5.0', '6.0']
         mongodb-db: ['ci']
         mongodb-username: ['ci']
         mongodb-password: ['ci']
