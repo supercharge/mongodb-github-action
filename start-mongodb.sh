@@ -13,9 +13,8 @@ wait_for_mongodb () {
   sleep 1
   TIMER=0
 
-  until docker exec --tty mongodb $MONGO_CLIENT --port $MONGODB_PORT --eval "db.serverStatus()" &> # /dev/null
+  until docker exec --tty mongodb $MONGO_CLIENT --port $MONGODB_PORT --eval "db.serverStatus()" # &> /dev/null
   do
-    sleep 1
     echo "."
     TIMER=$((TIMER + 1))
 
