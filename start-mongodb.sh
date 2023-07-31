@@ -8,23 +8,9 @@ MONGODB_DB=$4
 MONGODB_USERNAME=$5
 MONGODB_PASSWORD=$6
 
-wait_for_mongodb () {
-  echo "::group::Waiting for MongoDB to accept connections"
-  sleep 1
-  TIMER=0
+# `mongosh` is used starting from MongoDB 5.x
+MONGODB_CLIENT="mongosh --quiet"
 
-  until docker exec --tty mongodb $MONGO_CLIENT --eval "db.serverStatus()" # &> /dev/null
-  do
-    echo "."
-    TIMER=$((TIMER + 1))
-
-    if [[ $TIMER -eq 20 ]]; then
-      echo "MongoDB did not initialize within 20 seconds. Exiting."
-      exit 2
-    fi
-  done
-  echo "::endgroup::"
-}
 
 if [ -z "$MONGODB_VERSION" ]; then
   echo ""
@@ -38,12 +24,31 @@ fi
 echo "::group::Selecting correct MongoDB client"
 if [ "`echo $MONGODB_VERSION | cut -c 1`" = "4" ]; then
   MONGO_CLIENT="mongo"
-else
-  MONGO_CLIENT="mongosh --quiet"
 fi
 echo "  - Using [$MONGO_CLIENT]"
 echo ""
 echo "::endgroup::"
+
+
+# Helper function to wait for MongoDB to be started before moving on
+wait_for_mongodb () {
+  echo "::group::Waiting for MongoDB to accept connections"
+  sleep 1
+  TIMER=0
+
+  until docker exec --tty mongodb $MONGO_CLIENT --port $MONGODB_PORT --eval "db.serverStatus()"
+  do
+    echo "."
+    sleep 1
+    TIMER=$((TIMER + 1))
+
+    if [[ $TIMER -eq 20 ]]; then
+      echo "MongoDB did not initialize within 20 seconds. Exiting."
+      exit 2
+    fi
+  done
+  echo "::endgroup::"
+}
 
 
 if [ -z "$MONGODB_REPLICA_SET" ]; then
