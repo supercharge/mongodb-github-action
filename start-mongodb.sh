@@ -23,9 +23,9 @@ fi
 
 echo "::group::Selecting correct MongoDB client"
 if [ "`echo $MONGODB_VERSION | cut -c 1`" = "4" ]; then
-  MONGO_CLIENT="mongo"
+  MONGODB_CLIENT="mongo"
 fi
-echo "  - Using [$MONGO_CLIENT]"
+echo "  - Using [$MONGODB_CLIENT]"
 echo ""
 echo "::endgroup::"
 
@@ -36,7 +36,7 @@ wait_for_mongodb () {
   sleep 1
   TIMER=0
 
-  until docker exec --tty mongodb $MONGO_CLIENT --eval "db.serverStatus()"
+  until docker exec --tty mongodb $MONGODB_CLIENT --eval "db.serverStatus()"
   do
     echo "."
     sleep 1
@@ -91,7 +91,7 @@ wait_for_mongodb
 
 echo "::group::Initiating replica set [$MONGODB_REPLICA_SET]"
 
-docker exec --tty mongodb $MONGO_CLIENT --port $MONGODB_PORT --eval "
+docker exec --tty mongodb $MONGODB_CLIENT --port $MONGODB_PORT --eval "
   rs.initiate({
     \"_id\": \"$MONGODB_REPLICA_SET\",
     \"members\": [ {
@@ -106,7 +106,7 @@ echo "::endgroup::"
 
 
 echo "::group::Checking replica set status [$MONGODB_REPLICA_SET]"
-docker exec --tty mongodb $MONGO_CLIENT --port $MONGODB_PORT --eval "
+docker exec --tty mongodb $MONGODB_CLIENT --port $MONGODB_PORT --eval "
   rs.status()
 "
 echo "::endgroup::"
