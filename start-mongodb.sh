@@ -69,7 +69,7 @@ if [ -z "$MONGODB_REPLICA_SET" ]; then
 
   wait_for_mongodb
 
-  return
+  exit 0
 fi
 
 
@@ -106,7 +106,5 @@ echo "::endgroup::"
 
 
 echo "::group::Checking replica set status [$MONGODB_REPLICA_SET]"
-docker exec --tty mongodb $MONGODB_CLIENT --port $MONGODB_PORT --eval "
-  rs.status()
-"
+docker exec --tty mongodb $MONGODB_CLIENT --port $MONGODB_PORT --eval "rs.status()"
 echo "::endgroup::"
