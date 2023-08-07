@@ -1,6 +1,15 @@
 # Changelog
 
 
+## [1.10.0](https://github.com/superchargejs/mongodb-github-action/compare/v1.9.0...v1.10.0) - 2023-08-07
+
+### Added
+- MongoDB single instance: wait for MongoDB to be ready
+
+### Updated
+- bump dependencies
+
+
 ## [1.9.0](https://github.com/superchargejs/mongodb-github-action/compare/v1.8.0...v1.9.0) - 2023-02-10
 
 ### Added
