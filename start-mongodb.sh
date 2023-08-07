@@ -25,7 +25,7 @@ echo "::group::Selecting correct MongoDB client"
 if [ "`echo $MONGODB_VERSION | cut -c 1`" = "4" ]; then
   MONGODB_CLIENT="mongo"
 fi
-echo "  - Using [$MONGODB_CLIENT]"
+echo "  - Using MongoDB client: [$MONGODB_CLIENT]"
 echo ""
 echo "::endgroup::"
 
@@ -36,7 +36,21 @@ wait_for_mongodb () {
   sleep 1
   TIMER=0
 
-  until docker exec --tty mongodb $MONGODB_CLIENT -u "$MONGODB_USERNAME" -p "$MONGODB_PASSWORD" --eval "db.serverStatus()"
+  MONGODB_ARGS=""
+
+  if [ -z "$MONGODB_REPLICA_SET" ]
+  then
+    if [ -z "$MONGODB_USERNAME" ]
+    then
+      MONGODB_ARGS=""
+    else
+      # no replica set, but username given: use them as args
+      MONGODB_ARGS="--username $MONGODB_USERNAME --password $MONGODB_PASSWORD"
+    fi
+  fi
+
+  # until ${WAIT_FOR_MONGODB_COMMAND}
+  until docker exec --tty mongodb $MONGODB_CLIENT --port $MONGODB_PORT $MONGODB_ARGS --eval "db.serverStatus()"
   do
     echo "."
     sleep 1
@@ -59,7 +73,7 @@ if [ -z "$MONGODB_REPLICA_SET" ]; then
   echo "  - credentials [$MONGODB_USERNAME:$MONGODB_PASSWORD]"
   echo ""
 
-  docker run --name mongodb --publish $MONGODB_PORT:27017 -e MONGO_INITDB_DATABASE=$MONGODB_DB -e MONGO_INITDB_ROOT_USERNAME=$MONGODB_USERNAME -e MONGO_INITDB_ROOT_PASSWORD=$MONGODB_PASSWORD --detach mongo:$MONGODB_VERSION
+  docker run --name mongodb --publish $MONGODB_PORT:$MONGODB_PORT -e MONGO_INITDB_DATABASE=$MONGODB_DB -e MONGO_INITDB_ROOT_USERNAME=$MONGODB_USERNAME -e MONGO_INITDB_ROOT_PASSWORD=$MONGODB_PASSWORD --detach mongo:$MONGODB_VERSION --port $MONGODB_PORT
 
   if [ $? -ne 0 ]; then
       echo "Error starting MongoDB Docker container"
