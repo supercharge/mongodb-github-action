@@ -12,7 +12,7 @@ test('connects to MongoDB', async () => {
     pass: MONGODB_PASSWORD,
     dbName: MONGODB_DB,
     authSource: MONGODB_USERNAME && MONGODB_PASSWORD ? 'admin' : undefined
-  }).asPromise()
+  })
 
   await connection.close()
 })
