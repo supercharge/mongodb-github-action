@@ -51,7 +51,7 @@ wait_for_mongodb () {
   fi
 
   # until ${WAIT_FOR_MONGODB_COMMAND}
-  until docker exec --tty mongodb $MONGODB_CLIENT --port $MONGODB_PORT $MONGODB_ARGS --eval "db.serverStatus()"
+  until docker exec --tty $MONGODB_CONTAINER_NAME $MONGODB_CLIENT --port $MONGODB_PORT $MONGODB_ARGS --eval "db.serverStatus()"
   do
     echo "."
     sleep 1
