@@ -7,7 +7,7 @@ MONGODB_PORT=$3
 MONGODB_DB=$4
 MONGODB_USERNAME=$5
 MONGODB_PASSWORD=$6
-MONGODB_CONTAINER_NAME=$6
+MONGODB_CONTAINER_NAME=$7
 
 # `mongosh` is used starting from MongoDB 5.x
 MONGODB_CLIENT="mongosh --quiet"
@@ -72,6 +72,7 @@ if [ -z "$MONGODB_REPLICA_SET" ]; then
   echo "  - version [$MONGODB_VERSION]"
   echo "  - database [$MONGODB_DB]"
   echo "  - credentials [$MONGODB_USERNAME:$MONGODB_PASSWORD]"
+  echo "  - container-name [$MONGODB_CONTAINER_NAME]"
   echo ""
 
   docker run --name $MONGODB_CONTAINER_NAME --publish $MONGODB_PORT:$MONGODB_PORT -e MONGO_INITDB_DATABASE=$MONGODB_DB -e MONGO_INITDB_ROOT_USERNAME=$MONGODB_USERNAME -e MONGO_INITDB_ROOT_PASSWORD=$MONGODB_PASSWORD --detach mongo:$MONGODB_VERSION --port $MONGODB_PORT
@@ -94,7 +95,7 @@ echo "  - version [$MONGODB_VERSION]"
 echo "  - replica set [$MONGODB_REPLICA_SET]"
 echo ""
 
-docker run --name $MONGODB_CONTAINER_NAME --publish $MONGODB_PORT:$MONGODB_PORT --detach mongo:$MONGODB_VERSION --replSet $MONGODB_REPLICA_SET --port $MONGODB_PORT
+docker run --name $MONGODB_CONTAINER_NAME --publish $MONGODB_PORT:$MONGODB_PORT --detach mongo:$MONGODB_VERSION --replSet $MONGODB_REPLICA_SET
 
 if [ $? -ne 0 ]; then
     echo "Error starting MongoDB Docker container"
