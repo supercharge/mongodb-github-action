@@ -39,7 +39,7 @@ inputs:
   container-name:
     description: 'MongoDB container name (default: "mongodb")'
     required: false
-    default: "mongodb"
+    default: 'mongodb'
 
 runs:
   using: 'docker'
