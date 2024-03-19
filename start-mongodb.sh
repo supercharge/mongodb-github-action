@@ -95,6 +95,12 @@ echo "  - version [$MONGODB_VERSION]"
 echo "  - replica set [$MONGODB_REPLICA_SET]"
 echo ""
 
+# check if the container already exists and remove it
+if [ "$(docker ps -q -f name=$MONGODB_CONTAINER_NAME)" ]; then
+  echo "Removing existing container [$MONGODB_CONTAINER_NAME]"
+  docker rm -f $MONGODB_CONTAINER_NAME
+fi
+
 docker run --name $MONGODB_CONTAINER_NAME --publish $MONGODB_PORT:$MONGODB_PORT --detach mongo:$MONGODB_VERSION --replSet $MONGODB_REPLICA_SET
 
 if [ $? -ne 0 ]; then
