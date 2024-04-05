@@ -203,9 +203,9 @@ jobs:
 ```
 
 ### With Custom Container Name
-The container name of the created MongoDB instance can be configured using the "container-name" input
+The container name of the created MongoDB instance can be configured using the `container-name` input
 
-The following example will parameterize the MongoDB container name based on the node and mongodb versions being used:
+The following example will parameterize the MongoDB container name based on the `node-version` and `mongodb-version` being used from the matrix:
 
 ```yaml
 name: Run with Custom Container Names
