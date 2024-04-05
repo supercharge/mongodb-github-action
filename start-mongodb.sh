@@ -57,14 +57,19 @@ wait_for_mongodb () {
     sleep 1
     TIMER=$((TIMER + 1))
 
-    if [[ $TIMER -eq 20 ]]; then
-      echo "MongoDB did not initialize within 20 seconds. Exiting."
+    if [[ $TIMER -eq 40 ]]; then
+      echo "MongoDB did not initialize within 40 seconds. Exiting."
       exit 2
     fi
   done
   echo "::endgroup::"
 }
 
+# check if the container already exists and remove it
+if [ "$(docker ps -q -f name=$MONGODB_CONTAINER_NAME)" ]; then
+  echo "Removing existing container [$MONGODB_CONTAINER_NAME]"
+  docker rm -f $MONGODB_CONTAINER_NAME
+fi
 
 if [ -z "$MONGODB_REPLICA_SET" ]; then
   echo "::group::Starting single-node instance, no replica set"
@@ -94,6 +99,7 @@ echo "  - port [$MONGODB_PORT]"
 echo "  - version [$MONGODB_VERSION]"
 echo "  - replica set [$MONGODB_REPLICA_SET]"
 echo ""
+
 
 docker run --name $MONGODB_CONTAINER_NAME --publish $MONGODB_PORT:$MONGODB_PORT --detach mongo:$MONGODB_VERSION --replSet $MONGODB_REPLICA_SET
 
