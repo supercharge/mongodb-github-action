@@ -57,8 +57,8 @@ wait_for_mongodb () {
     sleep 1
     TIMER=$((TIMER + 1))
 
-    if [[ $TIMER -eq 20 ]]; then
-      echo "MongoDB did not initialize within 20 seconds. Exiting."
+    if [[ $TIMER -eq 40 ]]; then
+      echo "MongoDB did not initialize within 40 seconds. Exiting."
       exit 2
     fi
   done
