@@ -36,7 +36,7 @@ inputs:
     required: false
     default: ''
 
-  container-name:
+  mongodb-container-name:
     description: 'MongoDB container name (default: "mongodb")'
     required: false
     default: 'mongodb'
