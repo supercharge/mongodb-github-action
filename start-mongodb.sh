@@ -7,6 +7,7 @@ MONGODB_PORT=$3
 MONGODB_DB=$4
 MONGODB_USERNAME=$5
 MONGODB_PASSWORD=$6
+MONGODB_CONTAINER_NAME=$7
 
 # `mongosh` is used starting from MongoDB 5.x
 MONGODB_CLIENT="mongosh --quiet"
@@ -50,20 +51,25 @@ wait_for_mongodb () {
   fi
 
   # until ${WAIT_FOR_MONGODB_COMMAND}
-  until docker exec --tty mongodb $MONGODB_CLIENT --port $MONGODB_PORT $MONGODB_ARGS --eval "db.serverStatus()"
+  until docker exec --tty $MONGODB_CONTAINER_NAME $MONGODB_CLIENT --port $MONGODB_PORT $MONGODB_ARGS --eval "db.serverStatus()"
   do
     echo "."
     sleep 1
     TIMER=$((TIMER + 1))
 
-    if [[ $TIMER -eq 20 ]]; then
-      echo "MongoDB did not initialize within 20 seconds. Exiting."
+    if [[ $TIMER -eq 40 ]]; then
+      echo "MongoDB did not initialize within 40 seconds. Exiting."
       exit 2
     fi
   done
   echo "::endgroup::"
 }
 
+# check if the container already exists and remove it
+if [ "$(docker ps -q -f name=$MONGODB_CONTAINER_NAME)" ]; then
+  echo "Removing existing container [$MONGODB_CONTAINER_NAME]"
+  docker rm -f $MONGODB_CONTAINER_NAME
+fi
 
 if [ -z "$MONGODB_REPLICA_SET" ]; then
   echo "::group::Starting single-node instance, no replica set"
@@ -71,9 +77,10 @@ if [ -z "$MONGODB_REPLICA_SET" ]; then
   echo "  - version [$MONGODB_VERSION]"
   echo "  - database [$MONGODB_DB]"
   echo "  - credentials [$MONGODB_USERNAME:$MONGODB_PASSWORD]"
+  echo "  - container-name [$MONGODB_CONTAINER_NAME]"
   echo ""
 
-  docker run --name mongodb --publish $MONGODB_PORT:$MONGODB_PORT -e MONGO_INITDB_DATABASE=$MONGODB_DB -e MONGO_INITDB_ROOT_USERNAME=$MONGODB_USERNAME -e MONGO_INITDB_ROOT_PASSWORD=$MONGODB_PASSWORD --detach mongo:$MONGODB_VERSION --port $MONGODB_PORT
+  docker run --name $MONGODB_CONTAINER_NAME --publish $MONGODB_PORT:$MONGODB_PORT -e MONGO_INITDB_DATABASE=$MONGODB_DB -e MONGO_INITDB_ROOT_USERNAME=$MONGODB_USERNAME -e MONGO_INITDB_ROOT_PASSWORD=$MONGODB_PASSWORD --detach mongo:$MONGODB_VERSION --port $MONGODB_PORT
 
   if [ $? -ne 0 ]; then
       echo "Error starting MongoDB Docker container"
@@ -93,7 +100,8 @@ echo "  - version [$MONGODB_VERSION]"
 echo "  - replica set [$MONGODB_REPLICA_SET]"
 echo ""
 
-docker run --name mongodb --publish $MONGODB_PORT:$MONGODB_PORT --detach mongo:$MONGODB_VERSION --replSet $MONGODB_REPLICA_SET --port $MONGODB_PORT
+
+docker run --name $MONGODB_CONTAINER_NAME --publish $MONGODB_PORT:$MONGODB_PORT --detach mongo:$MONGODB_VERSION --replSet $MONGODB_REPLICA_SET
 
 if [ $? -ne 0 ]; then
     echo "Error starting MongoDB Docker container"
@@ -105,7 +113,7 @@ wait_for_mongodb
 
 echo "::group::Initiating replica set [$MONGODB_REPLICA_SET]"
 
-docker exec --tty mongodb $MONGODB_CLIENT --port $MONGODB_PORT --eval "
+docker exec --tty $MONGODB_CONTAINER_NAME $MONGODB_CLIENT --port $MONGODB_PORT --eval "
   rs.initiate({
     \"_id\": \"$MONGODB_REPLICA_SET\",
     \"members\": [ {
@@ -120,5 +128,5 @@ echo "::endgroup::"
 
 
 echo "::group::Checking replica set status [$MONGODB_REPLICA_SET]"
-docker exec --tty mongodb $MONGODB_CLIENT --port $MONGODB_PORT --eval "rs.status()"
+docker exec --tty $MONGODB_CONTAINER_NAME $MONGODB_CLIENT --port $MONGODB_PORT --eval "rs.status()"
 echo "::endgroup::"

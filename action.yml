@@ -36,6 +36,11 @@ inputs:
     required: false
     default: ''
 
+  container-name:
+    description: 'MongoDB container name (default: "mongodb")'
+    required: false
+    default: 'mongodb'
+
 runs:
   using: 'docker'
   image: 'Dockerfile'
@@ -46,3 +51,4 @@ runs:
     - ${{ inputs.mongodb-db }}
     - ${{ inputs.mongodb-username }}
     - ${{ inputs.mongodb-password }}
+    - ${{ inputs.container-name }}
