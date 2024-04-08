@@ -203,7 +203,7 @@ jobs:
 ```
 
 ### With Custom Container Name
-The container name of the created MongoDB instance can be configured using the `container-name` input
+The container name of the created MongoDB instance can be configured using the `mongodb-container-name` input
 
 The following example will parameterize the MongoDB container name based on the `node-version` and `mongodb-version` being used from the matrix:
 
@@ -233,7 +233,7 @@ jobs:
       uses: supercharge/mongodb-github-action@1.10.0
       with:
         mongodb-version: ${{ matrix.mongodb-version }}
-        container-name: mongodb-${{ matrix.node-version }}-${{ matrix.mongodb-version }}
+        mongodb-container-name: mongodb-${{ matrix.node-version }}-${{ matrix.mongodb-version }}
 
     - name: Install dependencies
       run: npm install

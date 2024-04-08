@@ -12,5 +12,5 @@ inputs:
     type: string
   mongodb-password:
     type: string
-  container-name:
+  mongodb-container-name:
     type: string

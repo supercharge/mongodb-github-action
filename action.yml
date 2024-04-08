@@ -51,4 +51,4 @@ runs:
     - ${{ inputs.mongodb-db }}
     - ${{ inputs.mongodb-username }}
     - ${{ inputs.mongodb-password }}
-    - ${{ inputs.container-name }}
+    - ${{ inputs.mongodb-container-name }}
