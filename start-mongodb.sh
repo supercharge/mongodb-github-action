@@ -101,7 +101,7 @@ echo "  - replica set [$MONGODB_REPLICA_SET]"
 echo ""
 
 
-docker run --name $MONGODB_CONTAINER_NAME --publish $MONGODB_PORT:$MONGODB_PORT --detach mongo:$MONGODB_VERSION --replSet $MONGODB_REPLICA_SET
+docker run --name $MONGODB_CONTAINER_NAME --publish $MONGODB_PORT:$MONGODB_PORT --detach mongo:$MONGODB_VERSION --port $MONGODB_PORT --replSet $MONGODB_REPLICA_SET
 
 if [ $? -ne 0 ]; then
     echo "Error starting MongoDB Docker container"
