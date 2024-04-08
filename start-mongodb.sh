@@ -66,10 +66,12 @@ wait_for_mongodb () {
 }
 
 # check if the container already exists and remove it
-if [ "$(docker ps -q -f name=$MONGODB_CONTAINER_NAME)" ]; then
-  echo "Removing existing container [$MONGODB_CONTAINER_NAME]"
-  docker rm -f $MONGODB_CONTAINER_NAME
-fi
+## TODO: put this behind an option flag
+# if [ "$(docker ps -q -f name=$MONGODB_CONTAINER_NAME)" ]; then
+#  echo "Removing existing container [$MONGODB_CONTAINER_NAME]"
+#  docker rm -f $MONGODB_CONTAINER_NAME
+# fi
+
 
 if [ -z "$MONGODB_REPLICA_SET" ]; then
   echo "::group::Starting single-node instance, no replica set"
