@@ -41,6 +41,11 @@ inputs:
     required: false
     default: 'mongodb'
 
+  should-delete-existing-container:
+    description: 'Determine whether to delete an existing container defined by the "mongodb-container-name" variable (default: "no")'
+    required: false
+    default: 'no'
+
 runs:
   using: 'docker'
   image: 'Dockerfile'
@@ -52,3 +57,4 @@ runs:
     - ${{ inputs.mongodb-username }}
     - ${{ inputs.mongodb-password }}
     - ${{ inputs.mongodb-container-name }}
+    - ${{ inputs.should-delete-existing-container }}
