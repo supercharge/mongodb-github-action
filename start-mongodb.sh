@@ -23,7 +23,7 @@ fi
 
 
 echo "::group::Selecting correct MongoDB client"
-if [ "`echo $MONGODB_VERSION | cut -c 1`" = "4" ]; then
+if [ "`echo $MONGODB_VERSION | cut -c 1`" -le "4" ]; then
   MONGODB_CLIENT="mongo"
 fi
 echo "  - Using MongoDB client: [$MONGODB_CLIENT]"
