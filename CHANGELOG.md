@@ -1,6 +1,18 @@
 # Changelog
 
 
+## [1.11.0](https://github.com/superchargejs/mongodb-github-action/compare/v1.10.0...v1.11.0) - 2024-05-22
+
+### Added
+- added `mongodb-container-name` input: this option allows you to define the Docker container name
+
+### Fixed
+- use the `mongo` command to interact with MongoDB versions 4.x or lower. Previously, we only checked for MongoDB 4 and  would use `mongosh` for MongoDB 3 (and lower). [Thanks to Aravind!](https://github.com/supercharge/mongodb-github-action/pull/61)
+
+### Updated
+- bump dependencies
+
+
 ## [1.10.0](https://github.com/superchargejs/mongodb-github-action/compare/v1.9.0...v1.10.0) - 2023-08-07
 
 ### Added
