@@ -27,13 +27,13 @@
 ## Introduction
 This GitHub Action starts a MongoDB server or MongoDB replica set. By default, the MongoDB server is available on the default port `27017`. You can configure a custom port using the `mongodb-port` input. The examples show how to use a custom port.
 
-The MongoDB version must be specified using the `mongodb-version` input. The used version must exist in the published [`mongo` Docker hub tags](https://hub.docker.com/_/mongo?tab=tags). Default value is `latest`, other popular choices are `4.2`, `4.4`, `5.0` or `6.0`.
+The MongoDB version must be specified using the `mongodb-version` input. The used version must exist in the published [`mongo` Docker hub tags](https://hub.docker.com/_/mongo?tab=tags). Default value is `latest`, other popular choices are `6.0`, `7.0` or even release candidates `8.0.0-rc4`.
 
 This is useful when running tests against a MongoDB database.
 
 
 ## Usage
-A code example says more than a 1000 words. Here’s an exemplary GitHub Action using a MongoDB server in versions `4.2` and `4.4` to test a Node.js app:
+A code example says more than a 1000 words. Here’s an exemplary GitHub Action using a MongoDB server in different versions to test a Node.js app:
 
 ```yaml
 name: Run tests
@@ -45,8 +45,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [18.x, 20.x]
-        mongodb-version: ['4.2', '4.4', '5.0', '6.0']
+        node-version: [20.x, 22.x]
+        mongodb-version: ['6.0', '7.0', '8.0']
 
     steps:
     - name: Git checkout
@@ -58,7 +58,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
 
     - name: Start MongoDB
-      uses: supercharge/mongodb-github-action@1.10.0
+      uses: supercharge/mongodb-github-action@1.11.0
       with:
         mongodb-version: ${{ matrix.mongodb-version }}
 
@@ -85,8 +85,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [18.x, 20.x]
-        mongodb-version: ['4.2', '4.4', '5.0', '6.0']
+        node-version: [20.x, 22.x]
+        mongodb-version: ['6.0', '7.0', '8.0']
 
     steps:
     - name: Git checkout
@@ -98,7 +98,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
 
     - name: Start MongoDB
-      uses: supercharge/mongodb-github-action@1.10.0
+      uses: supercharge/mongodb-github-action@1.11.0
       with:
         mongodb-version: ${{ matrix.mongodb-version }}
         mongodb-replica-set: test-rs
@@ -129,8 +129,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [18.x, 20.x]
-        mongodb-version: ['4.2', '4.4', '5.0', '6.0']
+        node-version: [20.x, 22.x]
+        mongodb-version: ['6.0', '7.0', '8.0']
 
     steps:
     - name: Git checkout
@@ -142,7 +142,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
 
     - name: Start MongoDB
-      uses: supercharge/mongodb-github-action@1.10.0
+      uses: supercharge/mongodb-github-action@1.11.0
       with:
         mongodb-version: ${{ matrix.mongodb-version }}
         mongodb-replica-set: test-rs
@@ -173,8 +173,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [18.x, 20.x]
-        mongodb-version: ['4.2', '4.4', '5.0', '6.0']
+        node-version: [20.x, 22.x]
+        mongodb-version: ['6.0', '7.0', '8.0']
 
     steps:
     - name: Git checkout
@@ -186,7 +186,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
 
     - name: Start MongoDB
-      uses: supercharge/mongodb-github-action@1.10.0
+      uses: supercharge/mongodb-github-action@1.11.0
       with:
         mongodb-version: ${{ matrix.mongodb-version }}
         mongodb-username: supercharge
@@ -217,8 +217,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [18.x, 20.x]
-        mongodb-version: ['4.2', '4.4', '5.0', '6.0']
+        node-version: [20.x, 22.x]
+        mongodb-version: ['6.0', '7.0', '8.0']
 
     steps:
     - name: Git checkout
@@ -230,7 +230,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
 
     - name: Start MongoDB
-      uses: supercharge/mongodb-github-action@1.10.0
+      uses: supercharge/mongodb-github-action@1.11.0
       with:
         mongodb-version: ${{ matrix.mongodb-version }}
         mongodb-container-name: mongodb-${{ matrix.node-version }}-${{ matrix.mongodb-version }}
