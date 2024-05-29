@@ -8,6 +8,7 @@ MONGODB_DB=$4
 MONGODB_USERNAME=$5
 MONGODB_PASSWORD=$6
 MONGODB_CONTAINER_NAME=$7
+SHOULD_DELETE_EXISTING_CONTAINER=$8
 
 # `mongosh` is used starting from MongoDB 5.x
 MONGODB_CLIENT="mongosh --quiet"
@@ -66,12 +67,20 @@ wait_for_mongodb () {
 }
 
 
-# check if the container already exists and remove it
-## TODO: put this behind an option flag
-# if [ "$(docker ps -q -f name=$MONGODB_CONTAINER_NAME)" ]; then
-#  echo "Removing existing container [$MONGODB_CONTAINER_NAME]"
-#  docker rm -f $MONGODB_CONTAINER_NAME
-# fi
+if [[ "$SHOULD_DELETE_EXISTING_CONTAINER" == "yes" ]] || [[ "$SHOULD_DELETE_EXISTING_CONTAINER" == "1" ]]; then
+  echo "::group::Deleting possibly existing Docker container named [$MONGODB_CONTAINER_NAME]"
+  echo "  - container-name [$MONGODB_CONTAINER_NAME]"
+  echo ""
+
+  if [ "$(docker ps --quiet --filter name=$MONGODB_CONTAINER_NAME)" ]; then
+    echo "Removing existing container [$MONGODB_CONTAINER_NAME]"
+    docker rm --force $MONGODB_CONTAINER_NAME
+  else
+    echo "No other container with name [$MONGODB_CONTAINER_NAME] exists. Nothing to delete"
+  fi
+
+  echo "::endgroup::"
+fi
 
 
 if [ -z "$MONGODB_REPLICA_SET" ]; then
