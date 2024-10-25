@@ -60,6 +60,8 @@ jobs:
     - name: Start MongoDB
       uses: supercharge/mongodb-github-action@1.11.0
       with:
+        # Here we are using an image from Amazon's ECR rather than the default image from Docker Hub
+        mongodb-image: 'public.ecr.aws/docker/library/mongo'
         mongodb-version: ${{ matrix.mongodb-version }}
 
     - run: npm install

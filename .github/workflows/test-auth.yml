@@ -22,6 +22,7 @@ jobs:
       - name: Start MongoDB Server v${{ matrix.mongodb-version }}
         uses: ./
         with:
+          mongodb-image: 'public.ecr.aws/docker/library/mongo'
           mongodb-version: ${{ matrix.mongodb-version }}
           mongodb-db: ${{ matrix.mongodb-db }}
           mongodb-username: ${{ matrix.mongodb-username }}
