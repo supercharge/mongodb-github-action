@@ -60,8 +60,6 @@ jobs:
     - name: Start MongoDB
       uses: supercharge/mongodb-github-action@1.11.0
       with:
-        # Here we are using an image from Amazon's ECR rather than the default image from Docker Hub
-        mongodb-image: 'public.ecr.aws/docker/library/mongo'
         mongodb-version: ${{ matrix.mongodb-version }}
 
     - run: npm install
@@ -248,6 +246,17 @@ jobs:
 
 **Caveat:** due to [this issue](https://github.com/docker-library/mongo/issues/211), you **cannot enable user creation AND replica sets** initially. Therefore, if you use this action to setup a replica set, please create your users through a separate script.
 
+### Using a Custom Mongo Image
+You can utilize an alternative Redis image using the `mongodb-image` input:
+
+```yaml
+    - name: Start MongoDB
+      uses: supercharge/mongodb-github-action@1.11.0
+      with:
+        # Here we are using an image from Amazon's ECR rather than the default image from Docker Hub
+        mongodb-image: 'public.ecr.aws/docker/library/mongo'
+        mongodb-version: ${{ matrix.mongodb-version }}
+```
 
 ## License
 MIT © [Supercharge](https://superchargejs.com)
