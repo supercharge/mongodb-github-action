@@ -29,7 +29,7 @@ if [ -z "$MONGODB_VERSION" ]; then
   exit 2
 fi
 
-echo "::group::Using mogo image $MONGODB_IMAGE:$MONGODB_VERSION"
+echo "::group::Using MongoDB Docker image $MONGODB_IMAGE:$MONGODB_VERSION"
 
 echo "::group::Selecting correct MongoDB client"
 if [ "`echo $MONGODB_VERSION | cut -c 1`" -le "4" ]; then
