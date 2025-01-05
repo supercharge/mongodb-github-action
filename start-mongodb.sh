@@ -1,17 +1,25 @@
 #!/bin/sh
 
 # Map input values from the GitHub Actions workflow to shell variables
-MONGODB_VERSION=$1
-MONGODB_REPLICA_SET=$2
-MONGODB_PORT=$3
-MONGODB_DB=$4
-MONGODB_USERNAME=$5
-MONGODB_PASSWORD=$6
-MONGODB_CONTAINER_NAME=$7
+MONGODB_IMAGE=$1
+MONGODB_VERSION=$2
+MONGODB_REPLICA_SET=$3
+MONGODB_PORT=$4
+MONGODB_DB=$5
+MONGODB_USERNAME=$6
+MONGODB_PASSWORD=$7
+MONGODB_CONTAINER_NAME=$8
 
 # `mongosh` is used starting from MongoDB 5.x
 MONGODB_CLIENT="mongosh --quiet"
 
+if [ -z "$MONGODB_IMAGE" ]; then
+  echo ""
+  echo "Missing MongoDB image in the [mongodb-image] input. Received value: $MONGODB_IMAGE"
+  echo ""
+
+  exit 2
+fi
 
 if [ -z "$MONGODB_VERSION" ]; then
   echo ""
@@ -21,6 +29,7 @@ if [ -z "$MONGODB_VERSION" ]; then
   exit 2
 fi
 
+echo "::group::Using MongoDB Docker image $MONGODB_IMAGE:$MONGODB_VERSION"
 
 echo "::group::Selecting correct MongoDB client"
 if [ "`echo $MONGODB_VERSION | cut -c 1`" -le "4" ]; then
@@ -83,7 +92,7 @@ if [ -z "$MONGODB_REPLICA_SET" ]; then
   echo "  - container-name [$MONGODB_CONTAINER_NAME]"
   echo ""
 
-  docker run --name $MONGODB_CONTAINER_NAME --publish $MONGODB_PORT:$MONGODB_PORT -e MONGO_INITDB_DATABASE=$MONGODB_DB -e MONGO_INITDB_ROOT_USERNAME=$MONGODB_USERNAME -e MONGO_INITDB_ROOT_PASSWORD=$MONGODB_PASSWORD --detach mongo:$MONGODB_VERSION --port $MONGODB_PORT
+  docker run --name $MONGODB_CONTAINER_NAME --publish $MONGODB_PORT:$MONGODB_PORT -e MONGO_INITDB_DATABASE=$MONGODB_DB -e MONGO_INITDB_ROOT_USERNAME=$MONGODB_USERNAME -e MONGO_INITDB_ROOT_PASSWORD=$MONGODB_PASSWORD --detach $MONGODB_IMAGE:$MONGODB_VERSION --port $MONGODB_PORT
 
   if [ $? -ne 0 ]; then
       echo "Error starting MongoDB Docker container"
@@ -104,7 +113,7 @@ echo "  - replica set [$MONGODB_REPLICA_SET]"
 echo ""
 
 
-docker run --name $MONGODB_CONTAINER_NAME --publish $MONGODB_PORT:$MONGODB_PORT --detach mongo:$MONGODB_VERSION --port $MONGODB_PORT --replSet $MONGODB_REPLICA_SET
+docker run --name $MONGODB_CONTAINER_NAME --publish $MONGODB_PORT:$MONGODB_PORT --detach $MONGODB_IMAGE:$MONGODB_VERSION --port $MONGODB_PORT --replSet $MONGODB_REPLICA_SET
 
 if [ $? -ne 0 ]; then
     echo "Error starting MongoDB Docker container"

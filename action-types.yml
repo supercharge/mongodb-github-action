@@ -1,5 +1,7 @@
 # See https://github.com/krzema12/github-actions-typing
 inputs:
+  mongodb-image:
+    type: string
   mongodb-version:
     type: string
   mongodb-replica-set:
