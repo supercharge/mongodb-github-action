@@ -1,6 +1,15 @@
 # Changelog
 
 
+## [1.12.0](https://github.com/superchargejs/mongodb-github-action/compare/v1.11.0...v1.12.0) - 2025-01-05
+
+### Added
+- added `mongodb-image` input: this option allows you to define a custom Docker container image. It uses `mongo` by default, but you may specify an image from a different registry than Docker hub. Please check the Readme for details.
+
+### Updated
+- bump dependencies
+
+
 ## [1.11.0](https://github.com/superchargejs/mongodb-github-action/compare/v1.10.0...v1.11.0) - 2024-05-22
 
 ### Added
