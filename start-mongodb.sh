@@ -10,7 +10,7 @@ MONGODB_USERNAME=$6
 MONGODB_PASSWORD=$7
 MONGODB_CONTAINER_NAME=$8
 MONGODB_KEY=$9
-MONGODB_AUTHSOURCE=$10
+MONGODB_AUTHSOURCE=${10}
 
 # `mongosh` is used starting from MongoDB 5.x
 MONGODB_CLIENT="mongosh --quiet"
@@ -113,17 +113,6 @@ if { [ -n "$MONGODB_USERNAME" ] || [ -n "$MONGODB_PASSWORD" ]; } && [ -z "$MONGO
   MONGODB_KEY=$(dd if=/dev/urandom bs=756 count=1 2>/dev/null | base64 | tr -d '\n')
 fi
 
-# Prepare keyFile mount and args, if provided
-KEYFILE_ARGS=""
-VOLUME_ARGS=""
-if [ -n "$MONGODB_KEY" ]; then
-  KEYFILE_PATH="/tmp/mongo-keyfile"
-  echo "$MONGODB_KEY" > "$KEYFILE_PATH"
-  chmod 400 "$KEYFILE_PATH"
-  VOLUME_ARGS="--volume $KEYFILE_PATH:/tmp/keyfile:ro"
-  KEYFILE_ARGS="--keyFile /tmp/keyfile"
-fi
-
 echo "::group::Starting MongoDB as single-node replica set"
 echo "  - port [$MONGODB_PORT]"
 echo "  - version [$MONGODB_VERSION]"
@@ -144,10 +133,17 @@ docker run --name $MONGODB_CONTAINER_NAME \
   -e MONGO_INITDB_DATABASE=$MONGODB_DB \
   -e MONGO_INITDB_ROOT_USERNAME=$MONGODB_USERNAME \
   -e MONGO_INITDB_ROOT_PASSWORD=$MONGODB_PASSWORD \
-  --detach $MONGODB_IMAGE:$MONGODB_VERSION \
-  --port $MONGODB_PORT \
-  --replSet $MONGODB_REPLICA_SET \
-  $KEYFILE_ARGS
+  -e MONGO_PORT=$MONGODB_PORT \
+  -e MONGO_REPLICA_SET=$MONGODB_REPLICA_SET \
+  -e MONGO_KEY=$MONGODB_KEY \
+  -e MONGO_KEY_FILE=/tmp/mongo-keyfile \
+  --detach \
+  --entrypoint bash \
+  $MONGODB_IMAGE:$MONGODB_VERSION \
+  -c '\
+    echo "$MONGO_KEY" > "$MONGO_KEY_FILE" && chmod 400 "$MONGO_KEY_FILE" && chown mongodb:mongodb "$MONGO_KEY_FILE" && \
+    exec docker-entrypoint.sh mongod --port "$MONGO_PORT" --replSet "$MONGO_REPLICA_SET" --keyFile "$MONGO_KEY_FILE" \
+  '
 
 if [ $? -ne 0 ]; then
     echo "Error starting MongoDB Docker container"
