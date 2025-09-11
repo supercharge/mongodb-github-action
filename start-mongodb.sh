@@ -103,12 +103,6 @@ if [ -z "$MONGODB_REPLICA_SET" ]; then
   exit 0
 fi
 
-# For replica set mode:
-# If auth (username/password) is requested, ensure mongodb-key is provided, otherwise generate random
-if { [ -n "$MONGODB_USERNAME" ] || [ -n "$MONGODB_PASSWORD" ]; } && [ -z "$MONGODB_KEY" ]; then
-  MONGODB_KEY=$(dd if=/dev/urandom bs=256 count=1 2>/dev/null | base64 | tr -d '\n')
-fi
-
 echo "::group::Starting MongoDB as single-node replica set"
 echo "  - port [$MONGODB_PORT]"
 echo "  - version [$MONGODB_VERSION]"
@@ -116,9 +110,16 @@ echo "  - replica set [$MONGODB_REPLICA_SET]"
 if [ -n "$MONGODB_KEY" ]; then
   echo "  - keyFile provided: yes"
 else
-  echo "  - keyFile provided: no"
+  echo "  - keyFile provided: no (random)"
 fi
 echo ""
+
+# For replica set mode:
+# If auth (username/password) is requested, ensure mongodb-key is provided, otherwise generate random
+if { [ -n "$MONGODB_USERNAME" ] || [ -n "$MONGODB_PASSWORD" ]; } && [ -z "$MONGODB_KEY" ]; then
+  MONGODB_KEY=$(dd if=/dev/urandom bs=256 count=1 2>/dev/null | base64 | tr -d '\n')
+fi
+
 
 # Start mongod in replica set mode, with optional auth and keyFile
 # MONGO_INITDB_* envs will create the root user on first startup
