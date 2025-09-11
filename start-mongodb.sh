@@ -10,6 +10,7 @@ MONGODB_USERNAME=$6
 MONGODB_PASSWORD=$7
 MONGODB_CONTAINER_NAME=$8
 MONGODB_KEY=$9
+MONGODB_AUTHSOURCE=$10
 
 # `mongosh` is used starting from MongoDB 5.x
 MONGODB_CLIENT="mongosh --quiet"
@@ -49,7 +50,7 @@ wait_for_mongodb () {
 
   MONGODB_ARGS=""
   if [ -n "$MONGODB_USERNAME" ]; then
-    MONGODB_ARGS="--username $MONGODB_USERNAME --password $MONGODB_PASSWORD"
+    MONGODB_ARGS="--username $MONGODB_USERNAME --password $MONGODB_PASSWORD --authenticationDatabase $MONGODB_AUTHSOURCE"
   fi
 
   # until ${WAIT_FOR_MONGODB_COMMAND}

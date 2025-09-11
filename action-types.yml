@@ -6,8 +6,6 @@ inputs:
     type: string
   mongodb-replica-set:
     type: string
-  mongodb-key:
-    type: string
   mongodb-port:
     type: integer
   mongodb-db:
@@ -17,4 +15,8 @@ inputs:
   mongodb-password:
     type: string
   mongodb-container-name:
+    type: string
+  mongodb-key:
+    type: string
+  mongodb-authsource:
     type: string
