@@ -4,14 +4,14 @@ const { test } = require('uvu')
 const { expect } = require('expect')
 const Mongoose = require('mongoose')
 
-const { MONGODB_USERNAME, MONGODB_PASSWORD, MONGODB_DB } = process.env
+const { MONGODB_USERNAME, MONGODB_PASSWORD, MONGODB_DB, MONGODB_AUTHSOURCE } = process.env
 
 test('connects to MongoDB', async () => {
   const connection = await Mongoose.createConnection('mongodb://localhost', {
     user: MONGODB_USERNAME,
     pass: MONGODB_PASSWORD,
     dbName: MONGODB_DB,
-    authSource: MONGODB_USERNAME && MONGODB_PASSWORD ? 'admin' : undefined
+    authSource: MONGODB_USERNAME && MONGODB_PASSWORD ? MONGODB_AUTHSOURCE : undefined
   })
 
   await connection.close()
