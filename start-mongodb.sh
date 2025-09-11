@@ -104,13 +104,9 @@ if [ -z "$MONGODB_REPLICA_SET" ]; then
 fi
 
 # For replica set mode:
-# If auth (username/password) is requested, ensure mongodb-key is provided
+# If auth (username/password) is requested, ensure mongodb-key is provided, otherwise generate random
 if { [ -n "$MONGODB_USERNAME" ] || [ -n "$MONGODB_PASSWORD" ]; } && [ -z "$MONGODB_KEY" ]; then
-  echo ""
-  echo "The input [mongodb-key] is required when using [mongodb-username] or [mongodb-password] with a replica set."
-  echo "Generating random 'mongodb-key'."
-  echo ""
-  MONGODB_KEY=$(dd if=/dev/urandom bs=756 count=1 2>/dev/null | base64 | tr -d '\n')
+  MONGODB_KEY=$(dd if=/dev/urandom bs=256 count=1 2>/dev/null | base64 | tr -d '\n')
 fi
 
 echo "::group::Starting MongoDB as single-node replica set"
