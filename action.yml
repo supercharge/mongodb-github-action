@@ -21,6 +21,11 @@ inputs:
     required: false
     default: ''
 
+  mongodb-key:
+    description: 'MongoDB key, required if replica set and auth are setup through username and password (no key set by default)'
+    required: false
+    default: ''
+
   mongodb-port:
     description: 'MongoDB port to use (default 27017)'
     required: false
@@ -58,3 +63,4 @@ runs:
     - ${{ inputs.mongodb-username }}
     - ${{ inputs.mongodb-password }}
     - ${{ inputs.mongodb-container-name }}
+    - ${{ inputs.mongodb-key }}
