@@ -70,3 +70,15 @@ runs:
     - ${{ inputs.mongodb-container-name }}
     - ${{ inputs.mongodb-key }}
     - ${{ inputs.mongodb-authsource }}
+  post-entrypoint: /stop-mongodb.sh
+  post-args:
+    - ${{ inputs.mongodb-image }}
+    - ${{ inputs.mongodb-version }}
+    - ${{ inputs.mongodb-replica-set }}
+    - ${{ inputs.mongodb-port }}
+    - ${{ inputs.mongodb-db }}
+    - ${{ inputs.mongodb-username }}
+    - ${{ inputs.mongodb-password }}
+    - ${{ inputs.mongodb-container-name }}
+    - ${{ inputs.mongodb-key }}
+    - ${{ inputs.mongodb-authsource }}
