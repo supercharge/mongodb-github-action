@@ -120,16 +120,15 @@ if { [ -n "$MONGODB_USERNAME" ] || [ -n "$MONGODB_PASSWORD" ]; } && [ -z "$MONGO
   MONGODB_KEY=$(dd if=/dev/urandom bs=256 count=1 2>/dev/null | base64 | tr -d '\n')
 fi
 
-MONGO_KEY_FILE=/tmp/mongo-keyfile
+MONGODB_CMD_ARGS="--port \"$MONGODB_PORT\""
 
-MONGODB_CMD_ARGS="--port '$MONGODB_PORT'"
-
-if [ -n "$MONGO_REPLICA_SET" ]; then
-  MONGODB_CMD_ARGS="$MONGODB_CMD_ARGS --replSet '$MONGO_REPLICA_SET'"
+if [ -n "$MONGODB_REPLICA_SET" ]; then
+  MONGODB_CMD_ARGS="$MONGODB_CMD_ARGS --replSet \"$MONGODB_REPLICA_SET\""
 fi
 
 if [ -n "$MONGODB_KEY" ]; then
-  MONGODB_CMD_ARGS="$MONGODB_CMD_ARGS --keyFile '$MONGO_KEY_FILE'"
+  # NOTE: MONGO_KEY_FILE is interpolated internally
+  MONGODB_CMD_ARGS="$MONGODB_CMD_ARGS --keyFile \"\$MONGO_KEY_FILE\""
 fi
 
 
@@ -143,13 +142,13 @@ docker run --name $MONGODB_CONTAINER_NAME \
   -e MONGO_INITDB_ROOT_USERNAME=$MONGODB_USERNAME \
   -e MONGO_INITDB_ROOT_PASSWORD=$MONGODB_PASSWORD \
   -e MONGO_KEY=$MONGODB_KEY \
-  -e MONGO_KEY_FILE=$MONGO_KEY_FILE \
+  -e MONGO_KEY_FILE=/tmp/mongo-keyfile \
   --detach \
   --entrypoint bash \
   $MONGODB_IMAGE:$MONGODB_VERSION \
   -c '\
     echo "$MONGO_KEY" > "$MONGO_KEY_FILE" && chmod 400 "$MONGO_KEY_FILE" && chown mongodb:mongodb "$MONGO_KEY_FILE" && \
-    exec docker-entrypoint.sh mongod '$MONGODB_CMD_ARGS' \
+    exec docker-entrypoint.sh mongod '"$MONGODB_CMD_ARGS"' \
   '
 
 if [ $? -ne 0 ]; then
