@@ -1,7 +1,5 @@
 #!/bin/sh
 
-set -ex
-
 # Map input values from the GitHub Actions workflow to shell variables
 MONGODB_IMAGE=$1
 MONGODB_VERSION=$2
