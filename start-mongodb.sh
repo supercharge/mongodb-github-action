@@ -16,9 +16,7 @@ DOCKER_NETWORK_ALIAS=${12:-$MONGODB_CONTAINER_NAME}
 
 # If DOCKER_NETWORK not provided, try to detect the default GitHub Actions network
 if [ -z "$DOCKER_NETWORK" ]; then
-  if docker network ls --format '{{.Name}}' | grep -q '^github_network$'; then
-    DOCKER_NETWORK=github_network
-  fi
+  DOCKER_NETWORK=$(docker network ls --no-trunc --format '{{.Name}}' | grep '^github_network')
 fi
 
 # Build network args if a network is set
