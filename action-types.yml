@@ -20,3 +20,9 @@ inputs:
     type: string
   mongodb-authsource:
     type: string
+  mongodb-replica-set-host:
+    type: string
+  docker-network:
+    type: string
+  docker-network-alias:
+    type: string

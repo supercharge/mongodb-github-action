@@ -12,7 +12,7 @@ inputs:
     default: 'mongo'
 
   mongodb-version:
-    description: 'MongoDB version to use (default "latest")'
+    description: 'MongoDB version to use (default: "latest")'
     required: false
     default: 'latest'
 
@@ -22,7 +22,7 @@ inputs:
     default: ''
 
   mongodb-port:
-    description: 'MongoDB port to use (default 27017)'
+    description: 'MongoDB port to use (default: 27017)'
     required: false
     default: 27017
 
@@ -56,6 +56,11 @@ inputs:
     required: false
     default: 'admin'
 
+  mongodb-replica-set-host:
+    description: 'MongoDB replica set host, must be accessible from both internal container and external usage (default: "localhost")'
+    required: false
+    default: 'localhost'
+
   docker-network:
     description: 'Docker network to attach the MongoDB container to. If not provided, will try to use the default GitHub Actions network if available (github_network_<rand>).'
     required: false
@@ -80,6 +85,7 @@ runs:
     - ${{ inputs.mongodb-container-name }}
     - ${{ inputs.mongodb-key }}
     - ${{ inputs.mongodb-authsource }}
+    - ${{ inputs.mongodb-replica-set-host }}
     - ${{ inputs.docker-network }}
     - ${{ inputs.docker-network-alias }}
   post-entrypoint: /stop-mongodb.sh

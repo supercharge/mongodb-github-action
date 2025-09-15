@@ -11,8 +11,9 @@ MONGODB_PASSWORD=$7
 MONGODB_CONTAINER_NAME=$8
 MONGODB_KEY=$9
 MONGODB_AUTHSOURCE=${10}
-DOCKER_NETWORK=${11}
-DOCKER_NETWORK_ALIAS=${12:-$MONGODB_CONTAINER_NAME}
+MONGODB_REPLICA_SET_HOST=${11:-"localhost"}
+DOCKER_NETWORK=${12}
+DOCKER_NETWORK_ALIAS=${13:-$MONGODB_CONTAINER_NAME}
 
 # If DOCKER_NETWORK not provided, try to detect the default GitHub Actions network
 if [ -z "$DOCKER_NETWORK" ]; then
@@ -199,7 +200,7 @@ docker exec --tty $MONGODB_CONTAINER_NAME $MONGODB_CLIENT --port $MONGODB_PORT $
     \"_id\": \"$MONGODB_REPLICA_SET\",
     \"members\": [ {
        \"_id\": 0,
-      \"host\": \"localhost:$MONGODB_PORT\"
+      \"host\": \"$MONGODB_REPLICA_SET_HOST:$MONGODB_PORT\"
     } ]
   })
 "
