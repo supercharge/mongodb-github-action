@@ -11,6 +11,8 @@ MONGODB_PASSWORD=$7
 MONGODB_CONTAINER_NAME=$8
 MONGODB_KEY=$9
 MONGODB_AUTHSOURCE=${10}
+DOCKER_NETWORK=${11}
+DOCKER_NETWORK_ALIAS=${12}
 
 # Best-effort cleanup, do not fail the job if cleanup fails
 set +e

@@ -11,6 +11,21 @@ MONGODB_PASSWORD=$7
 MONGODB_CONTAINER_NAME=$8
 MONGODB_KEY=$9
 MONGODB_AUTHSOURCE=${10}
+DOCKER_NETWORK=${11}
+DOCKER_NETWORK_ALIAS=${12:-$MONGODB_CONTAINER_NAME}
+
+# If DOCKER_NETWORK not provided, try to detect the default GitHub Actions network
+if [ -z "$DOCKER_NETWORK" ]; then
+  if docker network ls --format '{{.Name}}' | grep -q '^github_network$'; then
+    DOCKER_NETWORK=github_network
+  fi
+fi
+
+# Build network args if a network is set
+NETWORK_ARGS=""
+if [ -n "$DOCKER_NETWORK" ]; then
+  NETWORK_ARGS="--network $DOCKER_NETWORK --network-alias $DOCKER_NETWORK_ALIAS"
+fi
 
 # `mongosh` is used starting from MongoDB 5.x
 MONGODB_CLIENT="mongosh --quiet"
@@ -87,6 +102,7 @@ if [ -z "$MONGODB_REPLICA_SET" ]; then
   echo ""
 
   docker run --name $MONGODB_CONTAINER_NAME \
+    $NETWORK_ARGS \
     --publish $MONGODB_PORT:$MONGODB_PORT \
     -e MONGO_INITDB_DATABASE=$MONGODB_DB \
     -e MONGO_INITDB_ROOT_USERNAME=$MONGODB_USERNAME \
@@ -136,6 +152,7 @@ fi
 # MONGO_INITDB_* envs will create the root user on first startup
 
 docker run --name $MONGODB_CONTAINER_NAME \
+  $NETWORK_ARGS \
   --publish $MONGODB_PORT:$MONGODB_PORT \
   $VOLUME_ARGS \
   -e MONGO_INITDB_DATABASE=$MONGODB_DB \

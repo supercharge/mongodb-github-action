@@ -56,6 +56,16 @@ inputs:
     required: false
     default: 'admin'
 
+  docker-network:
+    description: 'Docker network to attach the MongoDB container to. If not provided, will try to use the default GitHub Actions network if available (github_network_<rand>).'
+    required: false
+    default: ''
+
+  docker-network-alias:
+    description: 'Network alias for the MongoDB container when attaching to a Docker network. If not provided, will use mongodb-container-name input'
+    required: false
+    default: ''
+
 runs:
   using: 'docker'
   image: 'Dockerfile'
@@ -70,4 +80,6 @@ runs:
     - ${{ inputs.mongodb-container-name }}
     - ${{ inputs.mongodb-key }}
     - ${{ inputs.mongodb-authsource }}
+    - ${{ inputs.docker-network }}
+    - ${{ inputs.docker-network-alias }}
   post-entrypoint: /stop-mongodb.sh
