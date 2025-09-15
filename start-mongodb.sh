@@ -27,6 +27,17 @@ if [ -n "$DOCKER_NETWORK" ]; then
   NETWORK_ARGS="--network $DOCKER_NETWORK --network-alias $DOCKER_NETWORK_ALIAS"
 fi
 
+# Echo selected network info for visibility
+echo "::group::Selecting Docker network"
+if [ -n "$DOCKER_NETWORK" ]; then
+  echo "  - Docker network: [$DOCKER_NETWORK]"
+  echo "  - Network alias: [$DOCKER_NETWORK_ALIAS]"
+else
+  echo "  - No Docker network provided; container will use default Docker network."
+fi
+echo ""
+echo "::endgroup::"
+
 # `mongosh` is used starting from MongoDB 5.x
 MONGODB_CLIENT="mongosh --quiet"
 
