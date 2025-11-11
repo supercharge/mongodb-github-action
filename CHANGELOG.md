@@ -1,6 +1,12 @@
 # Changelog
 
 
+## [1.12.1](https://github.com/superchargejs/mongodb-github-action/compare/v1.12.0...v1.12.1) - 2025-11-11
+
+### Fixed
+- change Docker tag from `docker:stable` to `docker:latest`
+
+
 ## [1.12.0](https://github.com/superchargejs/mongodb-github-action/compare/v1.11.0...v1.12.0) - 2025-01-05
 
 ### Added
