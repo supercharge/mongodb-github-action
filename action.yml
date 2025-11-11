@@ -12,7 +12,7 @@ inputs:
     default: 'mongo'
 
   mongodb-version:
-    description: 'MongoDB version to use (default "latest")'
+    description: 'MongoDB version to use (default: "latest")'
     required: false
     default: 'latest'
 
@@ -22,7 +22,7 @@ inputs:
     default: ''
 
   mongodb-port:
-    description: 'MongoDB port to use (default 27017)'
+    description: 'MongoDB port to use (default: 27017)'
     required: false
     default: 27017
 
@@ -46,6 +46,31 @@ inputs:
     required: false
     default: 'mongodb'
 
+  mongodb-key:
+    description: 'MongoDB key, required if replica set and auth are setup through username and password (no key set by default)'
+    required: false
+    default: ''
+
+  mongodb-authsource:
+    description: 'MongoDB authenticationDatabase a.k.a authSource to use (default: "admin" based on https://github.com/docker-library/mongo/blob/master/8.0/docker-entrypoint.sh#L372C4-L372C20)'
+    required: false
+    default: 'admin'
+
+  mongodb-replica-set-host:
+    description: 'MongoDB replica set host, must be accessible from both internal container and external usage (default: "localhost")'
+    required: false
+    default: 'localhost'
+
+  docker-network:
+    description: 'Docker network to attach the MongoDB container to. If not provided, will try to use the default GitHub Actions network if available (github_network_<rand>).'
+    required: false
+    default: ''
+
+  docker-network-alias:
+    description: 'Network alias for the MongoDB container when attaching to a Docker network. If not provided, will use mongodb-container-name input'
+    required: false
+    default: ''
+
 runs:
   using: 'docker'
   image: 'Dockerfile'
@@ -58,3 +83,9 @@ runs:
     - ${{ inputs.mongodb-username }}
     - ${{ inputs.mongodb-password }}
     - ${{ inputs.mongodb-container-name }}
+    - ${{ inputs.mongodb-key }}
+    - ${{ inputs.mongodb-authsource }}
+    - ${{ inputs.mongodb-replica-set-host }}
+    - ${{ inputs.docker-network }}
+    - ${{ inputs.docker-network-alias }}
+  post-entrypoint: /stop-mongodb.sh

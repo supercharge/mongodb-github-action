@@ -9,6 +9,33 @@ MONGODB_DB=$5
 MONGODB_USERNAME=$6
 MONGODB_PASSWORD=$7
 MONGODB_CONTAINER_NAME=$8
+MONGODB_KEY=$9
+MONGODB_AUTHSOURCE=${10}
+MONGODB_REPLICA_SET_HOST=${11:-"localhost"}
+DOCKER_NETWORK=${12}
+DOCKER_NETWORK_ALIAS=${13:-$MONGODB_CONTAINER_NAME}
+
+# If DOCKER_NETWORK not provided, try to detect the default GitHub Actions network
+if [ -z "$DOCKER_NETWORK" ]; then
+  DOCKER_NETWORK=$(docker network ls --no-trunc --format '{{.Name}}' | grep '^github_network')
+fi
+
+# Build network args if a network is set
+NETWORK_ARGS=""
+if [ -n "$DOCKER_NETWORK" ]; then
+  NETWORK_ARGS="--network $DOCKER_NETWORK --network-alias $DOCKER_NETWORK_ALIAS"
+fi
+
+# Echo selected network info for visibility
+echo "::group::Selecting Docker network"
+if [ -n "$DOCKER_NETWORK" ]; then
+  echo "  - Docker network: [$DOCKER_NETWORK]"
+  echo "  - Network alias: [$DOCKER_NETWORK_ALIAS]"
+else
+  echo "  - No Docker network provided; container will use default Docker network."
+fi
+echo ""
+echo "::endgroup::"
 
 # `mongosh` is used starting from MongoDB 5.x
 MONGODB_CLIENT="mongosh --quiet"
@@ -47,16 +74,8 @@ wait_for_mongodb () {
   TIMER=0
 
   MONGODB_ARGS=""
-
-  if [ -z "$MONGODB_REPLICA_SET" ]
-  then
-    if [ -z "$MONGODB_USERNAME" ]
-    then
-      MONGODB_ARGS=""
-    else
-      # no replica set, but username given: use them as args
-      MONGODB_ARGS="--username $MONGODB_USERNAME --password $MONGODB_PASSWORD"
-    fi
+  if [ -n "$MONGODB_USERNAME" ]; then
+    MONGODB_ARGS="--username $MONGODB_USERNAME --password $MONGODB_PASSWORD --authenticationDatabase $MONGODB_AUTHSOURCE"
   fi
 
   # until ${WAIT_FOR_MONGODB_COMMAND}
@@ -66,7 +85,7 @@ wait_for_mongodb () {
     sleep 1
     TIMER=$((TIMER + 1))
 
-    if [[ $TIMER -eq 20 ]]; then
+    if [ "$TIMER" -eq 20 ]; then
       echo "MongoDB did not initialize within 20 seconds. Exiting."
       exit 2
     fi
@@ -82,7 +101,7 @@ wait_for_mongodb () {
 #  docker rm -f $MONGODB_CONTAINER_NAME
 # fi
 
-
+# If no replica set specified, run single node
 if [ -z "$MONGODB_REPLICA_SET" ]; then
   echo "::group::Starting single-node instance, no replica set"
   echo "  - port [$MONGODB_PORT]"
@@ -92,7 +111,13 @@ if [ -z "$MONGODB_REPLICA_SET" ]; then
   echo "  - container-name [$MONGODB_CONTAINER_NAME]"
   echo ""
 
-  docker run --name $MONGODB_CONTAINER_NAME --publish $MONGODB_PORT:$MONGODB_PORT -e MONGO_INITDB_DATABASE=$MONGODB_DB -e MONGO_INITDB_ROOT_USERNAME=$MONGODB_USERNAME -e MONGO_INITDB_ROOT_PASSWORD=$MONGODB_PASSWORD --detach $MONGODB_IMAGE:$MONGODB_VERSION --port $MONGODB_PORT
+  docker run --name $MONGODB_CONTAINER_NAME \
+    $NETWORK_ARGS \
+    --publish $MONGODB_PORT:$MONGODB_PORT \
+    -e MONGO_INITDB_DATABASE=$MONGODB_DB \
+    -e MONGO_INITDB_ROOT_USERNAME=$MONGODB_USERNAME \
+    -e MONGO_INITDB_ROOT_PASSWORD=$MONGODB_PASSWORD \
+    --detach $MONGODB_IMAGE:$MONGODB_VERSION --port $MONGODB_PORT
 
   if [ $? -ne 0 ]; then
       echo "Error starting MongoDB Docker container"
@@ -101,36 +126,81 @@ if [ -z "$MONGODB_REPLICA_SET" ]; then
   echo "::endgroup::"
 
   wait_for_mongodb
-
   exit 0
 fi
-
 
 echo "::group::Starting MongoDB as single-node replica set"
 echo "  - port [$MONGODB_PORT]"
 echo "  - version [$MONGODB_VERSION]"
 echo "  - replica set [$MONGODB_REPLICA_SET]"
+if [ -n "$MONGODB_KEY" ]; then
+  echo "  - keyFile provided: yes"
+else
+  echo "  - keyFile provided: no (random)"
+fi
 echo ""
 
+# For replica set mode:
+# If auth (username/password) is requested, ensure mongodb-key is provided, otherwise generate random
+if { [ -n "$MONGODB_USERNAME" ] || [ -n "$MONGODB_PASSWORD" ]; } && [ -z "$MONGODB_KEY" ]; then
+  MONGODB_KEY=$(dd if=/dev/urandom bs=256 count=1 2>/dev/null | base64 | tr -d '\n')
+fi
 
-docker run --name $MONGODB_CONTAINER_NAME --publish $MONGODB_PORT:$MONGODB_PORT --detach $MONGODB_IMAGE:$MONGODB_VERSION --port $MONGODB_PORT --replSet $MONGODB_REPLICA_SET
+MONGODB_CMD_ARGS="--port \"$MONGODB_PORT\""
+
+if [ -n "$MONGODB_REPLICA_SET" ]; then
+  MONGODB_CMD_ARGS="$MONGODB_CMD_ARGS --replSet \"$MONGODB_REPLICA_SET\""
+fi
+
+if [ -n "$MONGODB_KEY" ]; then
+  # NOTE: MONGO_KEY_FILE is interpolated internally
+  MONGODB_CMD_ARGS="$MONGODB_CMD_ARGS --keyFile \"\$MONGO_KEY_FILE\""
+fi
+
+
+# Start mongod in replica set mode, with optional auth and keyFile
+# MONGO_INITDB_* envs will create the root user on first startup
+
+docker run --name $MONGODB_CONTAINER_NAME \
+  $NETWORK_ARGS \
+  --publish $MONGODB_PORT:$MONGODB_PORT \
+  -e MONGO_INITDB_DATABASE=$MONGODB_DB \
+  -e MONGO_INITDB_ROOT_USERNAME=$MONGODB_USERNAME \
+  -e MONGO_INITDB_ROOT_PASSWORD=$MONGODB_PASSWORD \
+  -e MONGO_KEY=$MONGODB_KEY \
+  -e MONGO_KEY_FILE=/tmp/mongo-keyfile \
+  --detach \
+  --entrypoint bash \
+  $MONGODB_IMAGE:$MONGODB_VERSION \
+  -c '\
+    echo "$MONGO_KEY" > "$MONGO_KEY_FILE" && chmod 400 "$MONGO_KEY_FILE" && chown mongodb:mongodb "$MONGO_KEY_FILE" && \
+    exec docker-entrypoint.sh mongod '"$MONGODB_CMD_ARGS"' \
+  '
 
 if [ $? -ne 0 ]; then
     echo "Error starting MongoDB Docker container"
     exit 2
 fi
+
 echo "::endgroup::"
 
 wait_for_mongodb
 
+# After mongod is up, initiate the replica set
+# Use auth if credentials were supplied
+MONGODB_ARGS=""
+if [ -n "$MONGODB_USERNAME" ]; then
+  MONGODB_ARGS="--username $MONGODB_USERNAME --password $MONGODB_PASSWORD"
+fi
+
 echo "::group::Initiating replica set [$MONGODB_REPLICA_SET]"
 
-docker exec --tty $MONGODB_CONTAINER_NAME $MONGODB_CLIENT --port $MONGODB_PORT --eval "
+docker exec --tty $MONGODB_CONTAINER_NAME $MONGODB_CLIENT --port $MONGODB_PORT $MONGODB_ARGS --eval "
   rs.initiate({
     \"_id\": \"$MONGODB_REPLICA_SET\",
     \"members\": [ {
        \"_id\": 0,
-      \"host\": \"localhost:$MONGODB_PORT\"
+      \"host\": \"$MONGODB_REPLICA_SET_HOST:$MONGODB_PORT\"
     } ]
   })
 "
@@ -140,5 +210,5 @@ echo "::endgroup::"
 
 
 echo "::group::Checking replica set status [$MONGODB_REPLICA_SET]"
-docker exec --tty $MONGODB_CONTAINER_NAME $MONGODB_CLIENT --port $MONGODB_PORT --eval "rs.status()"
+docker exec --tty $MONGODB_CONTAINER_NAME $MONGODB_CLIENT --port $MONGODB_PORT $MONGODB_ARGS --eval "rs.status()"
 echo "::endgroup::"
