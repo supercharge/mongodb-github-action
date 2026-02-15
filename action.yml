@@ -72,20 +72,22 @@ inputs:
     default: ''
 
 runs:
-  using: 'docker'
-  image: 'Dockerfile'
-  args:
-    - ${{ inputs.mongodb-image }}
-    - ${{ inputs.mongodb-version }}
-    - ${{ inputs.mongodb-replica-set }}
-    - ${{ inputs.mongodb-port }}
-    - ${{ inputs.mongodb-db }}
-    - ${{ inputs.mongodb-username }}
-    - ${{ inputs.mongodb-password }}
-    - ${{ inputs.mongodb-container-name }}
-    - ${{ inputs.mongodb-key }}
-    - ${{ inputs.mongodb-authsource }}
-    - ${{ inputs.mongodb-replica-set-host }}
-    - ${{ inputs.docker-network }}
-    - ${{ inputs.docker-network-alias }}
-  post-entrypoint: /stop-mongodb.sh
+  using: 'composite'
+  steps:
+    - name: Start MongoDB
+      shell: bash
+      env:
+        MONGODB_IMAGE: ${{ inputs.mongodb-image }}
+        MONGODB_VERSION: ${{ inputs.mongodb-version }}
+        MONGODB_REPLICA_SET: ${{ inputs.mongodb-replica-set }}
+        MONGODB_PORT: ${{ inputs.mongodb-port }}
+        MONGODB_DB: ${{ inputs.mongodb-db }}
+        MONGODB_USERNAME: ${{ inputs.mongodb-username }}
+        MONGODB_PASSWORD: ${{ inputs.mongodb-password }}
+        MONGODB_CONTAINER_NAME: ${{ inputs.mongodb-container-name }}
+        MONGODB_KEY: ${{ inputs.mongodb-key }}
+        MONGODB_AUTHSOURCE: ${{ inputs.mongodb-authsource }}
+        MONGODB_REPLICA_SET_HOST: ${{ inputs.mongodb-replica-set-host }}
+        DOCKER_NETWORK: ${{ inputs.docker-network }}
+        DOCKER_NETWORK_ALIAS: ${{ inputs.docker-network-alias }}
+      run: ${{ github.action_path }}/start-mongodb.sh
