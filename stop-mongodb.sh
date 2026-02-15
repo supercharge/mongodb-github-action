@@ -1,19 +1,7 @@
 #!/bin/sh
 
-# Keep argument positions aligned with action.yml "args" so we can reuse them in post-args
-MONGODB_IMAGE=$1
-MONGODB_VERSION=$2
-MONGODB_REPLICA_SET=$3
-MONGODB_PORT=$4
-MONGODB_DB=$5
-MONGODB_USERNAME=$6
-MONGODB_PASSWORD=$7
-MONGODB_CONTAINER_NAME=$8
-MONGODB_KEY=$9
-MONGODB_AUTHSOURCE=${10}
-MONGODB_REPLICA_SET_HOST=${11:-"localhost"}
-DOCKER_NETWORK=${12}
-DOCKER_NETWORK_ALIAS=${13:-$MONGODB_CONTAINER_NAME}
+# Variables are now passed via environment variables from action.yml
+MONGODB_CONTAINER_NAME="${MONGODB_CONTAINER_NAME:-mongodb}"
 
 # Best-effort cleanup, do not fail the job if cleanup fails
 set +e
