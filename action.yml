@@ -91,9 +91,3 @@ runs:
         DOCKER_NETWORK: ${{ inputs.docker-network }}
         DOCKER_NETWORK_ALIAS: ${{ inputs.docker-network-alias }}
       run: ${{ github.action_path }}/start-mongodb.sh
-    - name: Register MongoDB cleanup
-      if: always()
-      shell: bash
-      env:
-        MONGODB_CONTAINER_NAME: ${{ inputs.mongodb-container-name }}
-      run: ${{ github.action_path }}/stop-mongodb.sh
