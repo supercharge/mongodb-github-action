@@ -14,6 +14,7 @@ MONGODB_AUTHSOURCE=${10}
 MONGODB_REPLICA_SET_HOST=${11:-"localhost"}
 DOCKER_NETWORK=${12}
 DOCKER_NETWORK_ALIAS=${13:-$MONGODB_CONTAINER_NAME}
+MONGODB_EXTRA_ENV=${14}
 
 # If DOCKER_NETWORK not provided, try to detect the default GitHub Actions network
 if [ -z "$DOCKER_NETWORK" ]; then
@@ -24,6 +25,17 @@ fi
 NETWORK_ARGS=""
 if [ -n "$DOCKER_NETWORK" ]; then
   NETWORK_ARGS="--network $DOCKER_NETWORK --network-alias $DOCKER_NETWORK_ALIAS"
+fi
+
+# Build extra -e flags from newline-separated KEY=VALUE pairs
+EXTRA_ENV_ARGS=""
+if [ -n "$MONGODB_EXTRA_ENV" ]; then
+  while IFS= read -r env_line; do
+    [ -z "$env_line" ] && continue
+    EXTRA_ENV_ARGS="$EXTRA_ENV_ARGS -e $env_line"
+  done <<EOF
+$MONGODB_EXTRA_ENV
+EOF
 fi
 
 # Echo selected network info for visibility
@@ -117,6 +129,7 @@ if [ -z "$MONGODB_REPLICA_SET" ]; then
     -e MONGO_INITDB_DATABASE=$MONGODB_DB \
     -e MONGO_INITDB_ROOT_USERNAME=$MONGODB_USERNAME \
     -e MONGO_INITDB_ROOT_PASSWORD=$MONGODB_PASSWORD \
+    $EXTRA_ENV_ARGS \
     --detach $MONGODB_IMAGE:$MONGODB_VERSION --port $MONGODB_PORT
 
   if [ $? -ne 0 ]; then
@@ -169,6 +182,7 @@ docker run --name $MONGODB_CONTAINER_NAME \
   -e MONGO_INITDB_ROOT_PASSWORD=$MONGODB_PASSWORD \
   -e MONGO_KEY=$MONGODB_KEY \
   -e MONGO_KEY_FILE=/tmp/mongo-keyfile \
+  $EXTRA_ENV_ARGS \
   --detach \
   --entrypoint bash \
   $MONGODB_IMAGE:$MONGODB_VERSION \

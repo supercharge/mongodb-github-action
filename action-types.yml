@@ -26,3 +26,5 @@ inputs:
     type: string
   docker-network-alias:
     type: string
+  mongodb-extra-env:
+    type: string
