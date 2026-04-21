@@ -205,10 +205,21 @@ docker exec --tty $MONGODB_CONTAINER_NAME $MONGODB_CLIENT --port $MONGODB_PORT $
   })
 "
 
+if [ $? -ne 0 ]; then
+  echo "Error initiating replica set [$MONGODB_REPLICA_SET]"
+  exit 2
+fi
+
 echo "Success! Initiated replica set [$MONGODB_REPLICA_SET]"
 echo "::endgroup::"
 
 
 echo "::group::Checking replica set status [$MONGODB_REPLICA_SET]"
 docker exec --tty $MONGODB_CONTAINER_NAME $MONGODB_CLIENT --port $MONGODB_PORT $MONGODB_ARGS --eval "rs.status()"
+
+if [ $? -ne 0 ]; then
+  echo "Error checking replica set status [$MONGODB_REPLICA_SET]"
+  exit 2
+fi
+
 echo "::endgroup::"
