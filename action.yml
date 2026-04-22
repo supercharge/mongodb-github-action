@@ -71,6 +71,11 @@ inputs:
     required: false
     default: ''
 
+  mongodb-extra-env:
+    description: 'Extra environment variables to pass to the MongoDB container, one KEY=VALUE per line (e.g. "GLIBC_TUNABLES=glibc.pthread.rseq=1")'
+    required: false
+    default: ''
+
 runs:
   using: 'docker'
   image: 'Dockerfile'
@@ -88,4 +93,5 @@ runs:
     - ${{ inputs.mongodb-replica-set-host }}
     - ${{ inputs.docker-network }}
     - ${{ inputs.docker-network-alias }}
+    - ${{ inputs.mongodb-extra-env }}
   post-entrypoint: /stop-mongodb.sh
